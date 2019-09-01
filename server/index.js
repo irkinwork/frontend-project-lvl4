@@ -12,6 +12,7 @@ import koaLogger from 'koa-logger';
 import koaWebpack from 'koa-webpack';
 import bodyParser from 'koa-bodyparser';
 import session from 'koa-generic-session';
+import favicon from 'koa-favicon';
 import _ from 'lodash';
 import addRoutes from './routes';
 
@@ -22,7 +23,7 @@ const isDevelopment = !isProduction;
 
 export default () => {
   const app = new Koa();
-
+  app.use(favicon(path.resolve(`${__dirname}/../assets/favicon.ico`)));
   app.keys = ['some secret hurr'];
   app.use(session(app));
   app.use(bodyParser());
@@ -63,6 +64,5 @@ export default () => {
   addRoutes(router, io);
   app.use(router.allowedMethods());
   app.use(router.routes());
-
   return server;
 };

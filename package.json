@@ -21,7 +21,7 @@
     "type": "git",
     "url": "git@bitbucket.org:hexlet/frontend_l4_chat_project.git"
   },
-  "author": "Kirill Mokevnin",
+  "author": "Irina Nikolaidi",
   "license": "ISC",
   "bugs": {
     "url": ""
@@ -44,11 +44,13 @@
     "css-loader": "^3.1.0",
     "debug": "^4.1.1",
     "dotenv": "^8.0.0",
+    "eslint-loader": "^3.0.0",
     "faker": "^4.1.0",
     "jquery": "^3.4.1",
     "js-cookie": "^2.2.0",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
+    "koa-favicon": "^2.0.1",
     "koa-generic-session": "^2.0.1",
     "koa-logger": "^3.2.1",
     "koa-mount": "^4.0.0",
@@ -68,13 +70,15 @@
     "redux-form": "^8.1.0",
     "redux-thunk": "^2.3.0",
     "socket.io": "^2.2.0",
+    "socket.io-client": "^2.2.0",
     "style-loader": "^0.23.1",
     "webpack": "^4.36.1",
     "webpack-cli": "^3.3.6"
   },
   "devDependencies": {
+    "@hot-loader/react-dom": "^16.8.6",
     "babel-core": "^7.0.0-bridge.0",
-    "babel-eslint": "^10.0.2",
+    "babel-eslint": "^10.0.3",
     "babel-jest": "^24.8.0",
     "eslint": "^6.1.0",
     "eslint-config-airbnb": "^17.1.1",

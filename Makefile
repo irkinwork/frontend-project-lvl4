@@ -19,6 +19,9 @@ check-types:
 lint:
 	npx eslint . --ext js,jsx
 
+lintfix:
+	npx eslint . --fix --ext js,jsx
+
 publish:
 	npm publish
 

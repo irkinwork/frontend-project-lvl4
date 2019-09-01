@@ -12,7 +12,7 @@ export default (router, io) => {
       { id: randomChannelId, name: 'random', removable: false },
     ],
     messages: [],
-    currentChannelId: generalChannelId,
+    currentChannelIdId: generalChannelId,
   };
 
   const state = { ...defaultState };

@@ -1,14 +1,18 @@
+import openSocket from 'socket.io-client';
+import faker from 'faker';
+import cookies from 'js-cookie';
 import gon from 'gon';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../assets/application.css';
-import init from './init';
+import init from './index.jsx';
 
-// import faker from 'faker';
-// import cookies from 'js-cookie';
-// import io from 'socket.io-client';
+const io = openSocket();
 
 if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
 }
+const user = faker.fake('{{internet.userName}}');
 
-init(gon);
+cookies.set('user', user);
+
+init(gon, io);
