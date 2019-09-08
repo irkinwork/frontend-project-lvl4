@@ -4,8 +4,7 @@ module.exports = {
   mode: process.env.NODE_ENV || 'development',
   entry: {
     faker: 'faker',
-    cookies: 'js-cookie',
-    main: `${__dirname}/src/index.jsx`,
+    main: `${__dirname}/src/index.js`,
   },
   optimization: {
     minimizer: [
