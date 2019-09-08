@@ -5,7 +5,7 @@ module.exports = {
   entry: {
     faker: 'faker',
     cookies: 'js-cookie',
-    app: `${__dirname}/src/index.jsx`,
+    main: `${__dirname}/src/index.jsx`,
   },
   optimization: {
     minimizer: [
