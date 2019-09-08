@@ -1,54 +1,73 @@
-import { hot } from 'react-hot-loader/root';
 import React from 'react';
 import { connect } from 'react-redux';
 import cookies from 'js-cookie';
-import Form from './Form';
+import FormAddMsg from './FormAddMsg';
+import FormAddChannel from './FormAddChannel';
 import Channels from './Channels';
 import Messages from './Messages';
 import * as actions from '../actions';
 import UserCtx from '../context';
+import RootModal from './RootModal';
 
 const mapStateToProps = state => ({
   currentChannelId: state.currentChannelId,
   messages: state.messages,
+  channels: state.channels,
 });
 
 const actionCreators = {
-  setcurrentChannelId: actions.setcurrentChannelId,
+  setCurrentChannelId: actions.setCurrentChannelId,
   addMessageToStore: actions.addMessageToStore,
   getMessagesRequest: actions.getMessagesRequest,
+  getChannelsRequest: actions.getChannelsRequest,
+  removeChannelRequest: actions.removeChannelRequest,
+  renameChannelRequest: actions.renameChannelRequest,
+  showModal: actions.showModal,
+  hideModal: actions.hideModal,
 };
 
 @connect(mapStateToProps, actionCreators)
 class App extends React.Component {
   componentDidMount() {
-    const { getMessagesRequest, currentChannelId } = this.props;
+    const { getMessagesRequest, currentChannelId, getChannelsRequest } = this.props;
     getMessagesRequest(currentChannelId);
+    getChannelsRequest();
   }
 
   render() {
     const {
-      getMessagesRequest, currentChannelId, messages, setcurrentChannelId, gon,
+      getMessagesRequest, currentChannelId, messages,
+      setCurrentChannelId, channels, removeChannelRequest,
+      showModal,
     } = this.props;
+    const { confirm } = window;
     return (
       <UserCtx.Provider value={cookies.get('user')}>
         <div className="col-12">
+          <RootModal />
+          <FormAddChannel />
           <Channels
-            items={gon.channels}
+            items={channels.byId}
+            handleModalShow={showModal}
             handleClick={id => () => {
-              setcurrentChannelId(id);
+              setCurrentChannelId(id);
               getMessagesRequest(id);
+            }}
+            handleRemoveChannel={id => () => {
+              if (confirm('Do you really want to remove this channel?')) {
+                removeChannelRequest(id);
+              }
             }}
           />
           <Messages
             currentChannelId={currentChannelId}
             items={messages}
           />
-          <Form />
+          <FormAddMsg />
         </div>
       </UserCtx.Provider>
     );
   }
 }
 
-export default hot(App);
+export default App;

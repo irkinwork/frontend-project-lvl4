@@ -11,7 +11,7 @@ const io = openSocket();
 if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
 }
-const user = faker.fake('{{internet.userName}}');
+const user = faker.fake('{{name.lastName}} {{name.firstName}}');
 
 cookies.set('user', user);
 

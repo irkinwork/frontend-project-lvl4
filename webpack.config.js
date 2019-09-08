@@ -1,7 +1,6 @@
 module.exports = {
   mode: process.env.NODE_ENV || 'development',
   entry: [
-    'react-hot-loader/patch',
     `${__dirname}/src/index.js`,
   ],
   externals: {
@@ -9,7 +8,6 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.jsx'],
-    alias: { 'react-dom': '@hot-loader/react-dom' }
   },
   output: {
     path: `${__dirname}/dist/public`,

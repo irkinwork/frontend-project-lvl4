@@ -12,7 +12,7 @@ export default (router, io) => {
       { id: randomChannelId, name: 'random', removable: false },
     ],
     messages: [],
-    currentChannelIdId: generalChannelId,
+    currentChannelId: generalChannelId,
   };
 
   const state = { ...defaultState };
@@ -21,7 +21,6 @@ export default (router, io) => {
   apiRouter
     .get('/channels', (ctx) => {
       ctx.body = state.channels;
-      ctx.status = 301;
     })
     .post('/channels', (ctx) => {
       const { data: { attributes: { name } } } = ctx.request.body;
@@ -43,7 +42,7 @@ export default (router, io) => {
 
       io.emit('newChannel', data);
     })
-    .delete('/channels/:id', (ctx) => {
+    .delete('/channel/:id', (ctx) => {
       const channelId = Number(ctx.params.id);
       state.channels = state.channels.filter(c => c.id !== channelId);
       state.messages = state.messages.filter(m => m.channelId !== channelId);
@@ -56,7 +55,7 @@ export default (router, io) => {
       };
       io.emit('removeChannel', data);
     })
-    .patch('/channels/:id', (ctx) => {
+    .patch('/channel/:id', (ctx) => {
       const channelId = Number(ctx.params.id);
       const channel = state.channels.find(c => c.id === channelId);
 

@@ -16,7 +16,7 @@ const actionCreators = {
   addMessageRequest: actions.addMessageRequest,
 };
 @connect(mapStateToProps, actionCreators)
-class Form extends React.Component {
+class FormAddMsg extends React.Component {
   static contextType = UserCtx;
 
   handleSubmit = async (values) => {
@@ -50,4 +50,4 @@ class Form extends React.Component {
 
 export default reduxForm({
   form: 'msgForm',
-})(Form);
+})(FormAddMsg);

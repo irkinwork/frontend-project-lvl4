@@ -7,17 +7,41 @@ class Channels extends React.Component {
   }
 
   render() {
-    const { items, handleClick } = this.props;
+    const {
+      items, handleClick, handleRemoveChannel, handleModalShow,
+    } = this.props;
     return (
-      <div>
-        {items.map(item => (
-          <button
+      <div className="d-flex">
+        {Object.values(items).map(item => (
+          <div
             key={item.id}
-            type="button"
-            onClick={handleClick(item.id)}
           >
-            {item.name}
-          </button>
+            <button
+              type="button"
+              onClick={handleClick(item.id)}
+            >
+              {item.name}
+            </button>
+            {item.removable && (
+            <>
+              <button
+                type="button"
+                onClick={handleRemoveChannel(item.id)}
+              >
+                -
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  const payload = { type: 'Rename', props: { id: item.id, value: item.name } };
+                  handleModalShow(payload);
+                }}
+              >
+                ...
+              </button>
+            </>
+            )}
+          </div>
         ))}
       </div>
     );

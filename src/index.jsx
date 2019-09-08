@@ -17,6 +17,21 @@ export default (gon, io) => {
     store.dispatch(actions.addMessageToStore(data));
   });
 
+  io.on('newChannel', (channel) => {
+    const { data } = channel;
+    store.dispatch(actions.addChannelToStore(data));
+  });
+
+  io.on('removeChannel', (channel) => {
+    const { data } = channel;
+    store.dispatch(actions.removeChannelFromStore(data));
+  });
+
+  io.on('renameChannel', (channel) => {
+    const { data } = channel;
+    store.dispatch(actions.renameChannelFromStore(data));
+  });
+
   ReactDOM.render(
     <Provider store={store}>
       <App gon={gon} io={io} />
