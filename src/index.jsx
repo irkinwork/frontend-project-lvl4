@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { createStore, applyMiddleware, compose } from 'redux';
 import reducers from './reducers';
-import App from './containers/App.jsx';
+import App from './components/App.jsx';
 import * as actions from './actions';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -34,7 +34,7 @@ export default (gon, io) => {
 
   ReactDOM.render(
     <Provider store={store}>
-      <App gon={gon} io={io} />
+      <App gon={gon} />
     </Provider>, document.getElementById('chat'),
   );
 };

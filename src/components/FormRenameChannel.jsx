@@ -18,12 +18,15 @@ const renderField = ({
 const mapStateToProps = (state) => {
   const props = {
     channelsNames: Object.values(state.channels.byId).map(item => item.name),
+    type: state.modal.type,
+    value: state.modal.props.value,
   };
   return props;
 };
 
 const actionCreators = {
   renameChannelRequest: actions.renameChannelRequest,
+  hideModal: actions.hideModal,
 };
 @connect(mapStateToProps, actionCreators)
 class FormRenameChannel extends React.Component {
@@ -47,13 +50,14 @@ class FormRenameChannel extends React.Component {
   render() {
     const {
       handleSubmit, submitting, pristine, error,
+      refSubmit,
     } = this.props;
     const renderedForm = (
       <form className="form-inline" onSubmit={handleSubmit(this.handleSubmit)}>
         <div className="form-group mx-3">
           <Field label="Rename channel" name="name" required disabled={submitting} component={renderField} type="text" validate={this.wrappedValidate} />
         </div>
-        <input type="submit" disabled={pristine || submitting} className="btn btn-primary btn-sm" value="Rename" />
+        <input ref={refSubmit} type="submit" disabled={pristine || submitting} className="btn btn-primary btn-sm" value="Rename" />
         {error && <div className="ml-3">{error}</div>}
       </form>
     );
@@ -63,5 +67,4 @@ class FormRenameChannel extends React.Component {
 
 export default reduxForm({
   form: 'renameChannelForm',
-  // enableReinitialize: true,
 })(FormRenameChannel);

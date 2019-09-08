@@ -9,11 +9,10 @@ import * as actions from '../actions';
 import UserCtx from '../context';
 import RootModal from './RootModal';
 
-const mapStateToProps = state => ({
-  currentChannelId: state.currentChannelId,
-  messages: state.messages,
-  channels: state.channels,
-});
+const mapStateToProps = ({ currentChannelId, messages, channels }) => {
+  const props = { currentChannelId, messages, channels };
+  return props;
+};
 
 const actionCreators = {
   setCurrentChannelId: actions.setCurrentChannelId,
@@ -37,10 +36,9 @@ class App extends React.Component {
   render() {
     const {
       getMessagesRequest, currentChannelId, messages,
-      setCurrentChannelId, channels, removeChannelRequest,
+      setCurrentChannelId, channels,
       showModal,
     } = this.props;
-    const { confirm } = window;
     return (
       <UserCtx.Provider value={cookies.get('user')}>
         <div className="col-12">
@@ -53,10 +51,8 @@ class App extends React.Component {
               setCurrentChannelId(id);
               getMessagesRequest(id);
             }}
-            handleRemoveChannel={id => () => {
-              if (confirm('Do you really want to remove this channel?')) {
-                removeChannelRequest(id);
-              }
+            handleRemoveChannel={(id, name) => () => {
+              showModal({ type: 'Remove', props: { id, value: name } });
             }}
           />
           <Messages

@@ -1,8 +1,17 @@
+const TerserPlugin = require('terser-webpack-plugin');
+
 module.exports = {
   mode: process.env.NODE_ENV || 'development',
-  entry: [
-    `${__dirname}/src/index.js`,
-  ],
+  entry: {
+    faker: 'faker',
+    cookies: 'js-cookie',
+    app: `${__dirname}/src/index.jsx`,
+  },
+  optimization: {
+    minimizer: [
+      new TerserPlugin({ cache: true, parallel: true, sourceMap: false }),
+    ],
+  },
   externals: {
     gon: 'gon',
   },
@@ -12,6 +21,8 @@ module.exports = {
   output: {
     path: `${__dirname}/dist/public`,
     publicPath: '/assets/',
+    filename: '[name].js',
+    chunkFilename: '[id].chunk.js',
   },
   module: {
     rules: [
