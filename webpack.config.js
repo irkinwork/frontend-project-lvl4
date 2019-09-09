@@ -1,8 +1,14 @@
+const prod = process.env.NODE_ENV;
 module.exports = {
-  mode: process.env.NODE_ENV || 'development',
+  mode: prod || 'development',
   entry: [
     `${__dirname}/src/index.js`,
   ],
+  optimization: prod ? {
+    splitChunks: {
+      chunks: 'all',
+    },
+  } : {},
   externals: {
     gon: 'gon',
   },
