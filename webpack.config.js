@@ -1,16 +1,14 @@
-const TerserPlugin = require('terser-webpack-plugin');
-
+const prod = process.env.NODE_ENV;
 module.exports = {
-  mode: process.env.NODE_ENV || 'development',
-  entry: {
-    faker: 'faker',
-    main: `${__dirname}/src/index.js`,
-  },
-  optimization: {
-    minimizer: [
-      new TerserPlugin({ cache: true, parallel: true, sourceMap: false }),
-    ],
-  },
+  mode: prod || 'development',
+  entry: [
+    `${__dirname}/src/index.js`,
+  ],
+  optimization: prod ? {
+    splitChunks: {
+      chunks: 'all',
+    },
+  } : {},
   externals: {
     gon: 'gon',
   },
