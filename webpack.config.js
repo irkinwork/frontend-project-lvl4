@@ -1,14 +1,13 @@
-const prod = process.env.NODE_ENV;
 module.exports = {
-  mode: prod || 'development',
+  mode: process.env.NODE_ENV || 'development',
   entry: [
     `${__dirname}/src/index.js`,
   ],
-  optimization: prod ? {
+  optimization: {
     splitChunks: {
       chunks: 'all',
     },
-  } : {},
+  },
   externals: {
     gon: 'gon',
   },
@@ -19,7 +18,6 @@ module.exports = {
     path: `${__dirname}/dist/public`,
     publicPath: '/assets/',
     filename: '[name].js',
-    chunkFilename: '[id].chunk.js',
   },
   module: {
     rules: [

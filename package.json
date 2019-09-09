@@ -95,9 +95,8 @@
     "eslint-plugin-react": "^7.14.2",
     "flow-bin": "^0.103.0",
     "flow-typed": "^2.6.0",
-    "nodemon": "^1.19.1",
-    "terser-webpack-plugin": "^2.0.1",
     "jest": "^24.9.0",
-    "jest-cli": "^24.9.0"
+    "jest-cli": "^24.9.0",
+    "nodemon": "^1.19.1"
   }
 }
