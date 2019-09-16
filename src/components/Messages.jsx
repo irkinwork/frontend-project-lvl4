@@ -10,15 +10,11 @@ class Messages extends React.Component {
     }
   }
 
-  shouldComponentUpdate(prevProps) {
-    const { items, currentChannelId } = this.props;
-    const updatedColl = difference(prevProps.items, items);
-    return updatedColl.find(item => item.channelId === currentChannelId);
-  }
-
-  componentDidUpdate() {
-    const { refMessages } = this.props;
-    if (refMessages.current.lastElementChild) {
+  componentDidUpdate(prevProps) {
+    const { refMessages, items, currentChannelId } = this.props;
+    const updatedColl = difference(items, prevProps.items);
+    const isCurrentChannelUpdated = updatedColl.find(item => item.channelId === currentChannelId);
+    if (refMessages.current.lastElementChild && isCurrentChannelUpdated) {
       refMessages.current.lastElementChild.scrollIntoView(false);
     }
   }
