@@ -3,12 +3,6 @@
   "version": "0.0.1",
   "description": "",
   "main": "dist/index.js",
-  "bin": {
-    "hexlet": "dist/bin/hexlet.js"
-  },
-  "engines": {
-    "node": "9"
-  },
   "scripts": {
     "test": "jest",
     "build-server": "babel server --out-dir dist --source-maps inline",
