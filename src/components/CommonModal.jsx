@@ -1,28 +1,46 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
+import * as actions from '../actions';
 
-const CommonModal = ({
-  children, isShow, hideModal, doAction, title = '',
-  okText = 'OK',
-}) => (
-  <Modal show={isShow} onHide={hideModal}>
-    <Modal.Header closeButton>
-      <Modal.Title>{title}</Modal.Title>
-    </Modal.Header>
+const actionCreators = {
+  hideModal: actions.hideModal,
+};
 
-    {children && (
-      <Modal.Body>{children}</Modal.Body>
-    )}
-
-    <Modal.Footer>
-      <Button variant="primary" onClick={doAction}>
-        {okText}
-      </Button>
-      <Button variant="secondary" onClick={hideModal}>
-        Cancel
-      </Button>
-    </Modal.Footer>
-  </Modal>
-);
+@connect(null, actionCreators)
+class CommonModal extends React.PureComponent {
+  render() {
+    const {
+      children, isShow, hideModal, doAction, title = '',
+      okText = 'OK',
+    } = this.props;
+    const onExit = (e) => {
+      if (e) e.persist();
+      hideModal();
+    };
+    const onOk = () => {
+      if (doAction) doAction();
+      hideModal();
+    };
+    return (
+      <Modal show={isShow} onHide={onExit}>
+        <Modal.Header closeButton>
+          <Modal.Title>{title}</Modal.Title>
+        </Modal.Header>
+        {children && (
+          <Modal.Body>{children}</Modal.Body>
+        )}
+        <Modal.Footer>
+          <Button variant="primary" onClick={onOk}>
+            {okText}
+          </Button>
+          <Button variant="secondary" onClick={onExit}>
+            Cancel
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
+}
 
 export default CommonModal;

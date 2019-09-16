@@ -22,6 +22,9 @@ lint:
 lintfix:
 	npx eslint . --fix --ext js,jsx
 
+prod:
+	git push heroku master
+
 publish:
 	npm publish
 

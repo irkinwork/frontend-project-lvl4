@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Modal from './CommonModal';
-import FormRenameChannel from './FormRenameChannel';
+import CommonChannelForm from './CommonChannelForm';
 import * as actions from '../actions';
 
 const mapStateToProps = state => ({
@@ -10,8 +10,9 @@ const mapStateToProps = state => ({
 
 const actionCreators = {
   showModal: actions.showModal,
-  hideModal: actions.hideModal,
   removeChannelRequest: actions.removeChannelRequest,
+  renameChannelRequest: actions.renameChannelRequest,
+  addChannelRequest: actions.addChannelRequest,
 };
 
 @connect(mapStateToProps, actionCreators)
@@ -22,41 +23,66 @@ class RootModal extends React.Component {
   }
 
   render() {
-    const { modal: { type, props }, hideModal, removeChannelRequest } = this.props;
+    const {
+      modal: { type, props }, removeChannelRequest,
+      renameChannelRequest, addChannelRequest,
+    } = this.props;
     const renameModal = (
       <Modal
         isShow={type === 'Rename'}
-        hideModal={hideModal}
-        title={`Rename #${props.value}`}
-        okText="Rename"
+        title={`Rename #${props.name}`}
+        okText="Rename and close"
         doAction={() => {
           this.refSubmit.current.click();
         }}
       >
-        <FormRenameChannel
+        <CommonChannelForm
           refSubmit={this.refSubmit}
-          initialValues={{ name: props.value }}
+          initialValues={{ name: props.name }}
           id={props.id}
+          form="renameChannelForm"
+          doAction={renameChannelRequest}
+          okText="Rename"
         />
       </Modal>
     );
     const removeModal = (
       <Modal
         isShow={type === 'Remove'}
-        hideModal={hideModal}
-        title={`Do you really want to remove #${props.value}?`}
+        title={`Remove #${props.name}`}
         okText="Remove"
         doAction={() => {
           removeChannelRequest(props.id);
-          hideModal();
         }}
-      />
+      >
+        {`Do you really want to remove #${props.name}?`}
+      </Modal>
     );
-    const MODAL_COMPONENTS = {
+    const addModal = (
+      <Modal
+        isShow={type === 'Add'}
+        title="Add a new channel"
+        okText="Add and close"
+        doAction={() => {
+          this.refSubmit.current.click();
+        }}
+      >
+        <CommonChannelForm
+          refSubmit={this.refSubmit}
+          id={props.id}
+          form="addChannelForm"
+          doAction={addChannelRequest}
+          okText="Add"
+        />
+
+      </Modal>
+    );
+    const modalComponents = {
       Rename: renameModal,
       Remove: removeModal,
+      Add: addModal,
     };
-    const SpecificModal = MODAL_COMPONENTS[type];
+    const SpecificModal = modalComponents[type];
     return (
       <>{SpecificModal}</>
     );

@@ -1,12 +1,11 @@
-import _ from 'lodash';
 import update from 'immutability-helper';
 import { combineReducers } from 'redux';
 import { handleActions } from 'redux-actions';
-import { reducer as formReducer } from 'redux-form';
+import { reducer as form } from 'redux-form';
 import * as actions from '../actions';
 
 const channels = handleActions({
-  [actions.getChannelsSuccess](state, { payload }) {
+  [actions.getChannelsFromGon](state, { payload }) {
     const byId = payload.reduce((acc, item) => ({ ...acc, [item.id]: item }), {});
     const allIds = payload.map(item => item.id);
     return { byId, allIds };
@@ -32,22 +31,29 @@ const channels = handleActions({
   },
 }, { byId: {}, allIds: [] });
 
-const currentChannelId = handleActions({
-  [actions.setCurrentChannelId](state, { payload }) {
+const initialCurrentChannel = { id: 1, name: 'general', removable: false };
+const currentChannel = handleActions({
+  [actions.setCurrentChannel](state, { payload }) {
     return payload;
   },
-}, 1);
+  [actions.renameChannelFromStore](state, { payload }) {
+    return payload.attributes;
+  },
+  [actions.addChannelToStore](state, { payload }) {
+    return payload.attributes;
+  },
+  [actions.setInitialCurrentChannel]() {
+    return initialCurrentChannel;
+  },
+}, initialCurrentChannel);
 
 const messages = handleActions({
+  [actions.getMessagesFromGon](state, { payload }) {
+    return payload;
+  },
   [actions.addMessageToStore](state, { payload }) {
     const { attributes } = payload;
     const newState = state.concat(attributes);
-    return newState;
-  },
-  [actions.getMessagesSuccess](state, { payload }) {
-    const data = payload.map(item => item.attributes);
-    const newItems = _.differenceBy(data, state, 'id');
-    const newState = state.concat(newItems);
     return newState;
   },
   [actions.removeChannelFromStore](state, { payload }) {
@@ -57,7 +63,7 @@ const messages = handleActions({
   },
 }, []);
 
-const modalInitialState = { type: null, props: { value: '', id: null } };
+const modalInitialState = { type: null, props: { name: '', id: null } };
 const modal = handleActions({
   [actions.showModal](state, { payload }) {
     return payload;
@@ -67,11 +73,17 @@ const modal = handleActions({
   },
 }, modalInitialState);
 
+const isLoaded = handleActions({
+  [actions.setIsLoaded]() {
+    return true;
+  },
+}, false);
 
 export default combineReducers({
+  isLoaded,
   modal,
   messages,
   channels,
-  currentChannelId,
-  form: formReducer,
+  currentChannel,
+  form,
 });
