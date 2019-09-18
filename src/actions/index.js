@@ -54,10 +54,10 @@ export const addChannelRequest = ({ data }) => async (dispatch) => {
 
 export const renameChannelRequest = ({ data }, id) => async (dispatch) => {
   try {
-    const response = await axios.patch(routes.channelPath(id), { data });
-    const { data: { data: { attributes } } } = response;
+    await axios.patch(routes.channelPath(id), { data });
     await dispatch(renameChannelSuccess());
-    await dispatch(setCurrentChannel(attributes));
+    const renamedChannel = { ...data.attributes, id, removable: true };
+    await dispatch(setCurrentChannel(renamedChannel));
     await dispatch(hideModal());
   } catch (e) {
     await dispatch(renameChannelFailure(e));
