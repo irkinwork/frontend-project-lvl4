@@ -2,3 +2,4 @@ node_modules/
 notes.js
 dist/
 babel.types.txt
+.vscode
