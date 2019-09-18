@@ -36,12 +36,6 @@ const currentChannel = handleActions({
   [actions.setCurrentChannel](state, { payload }) {
     return payload;
   },
-  [actions.renameChannelFromStore](state, { payload }) {
-    return payload.attributes;
-  },
-  [actions.addChannelToStore](state, { payload }) {
-    return payload.attributes;
-  },
   [actions.setInitialCurrentChannel]() {
     return initialCurrentChannel;
   },

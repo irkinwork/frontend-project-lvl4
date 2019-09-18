@@ -15,6 +15,9 @@ export const validateMessage = (msg) => {
   if (msg && msg.trim() === '') {
     return 'You can\'t send empty message';
   }
+  if (msg && msg.length > 10000) {
+    return 'The maximum length should be 10 000 symbols';
+  }
   return undefined;
 };
 
@@ -24,12 +27,3 @@ export const makeValuesSafe = values => Object.keys(values).reduce((acc, item) =
 }, {});
 
 export const UserContext = React.createContext();
-
-export const renderField = ({
-  input, label, type, meta: { touched, error, warning },
-}) => (
-  <div className="d-flex flex-fill flex-column mr-2">
-    <input {...input} placeholder={label} type={type} className="p-1" />
-    {touched && ((error && <small>{error}</small>) || (warning && <small>{warning}</small>))}
-  </div>
-);

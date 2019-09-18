@@ -50,13 +50,15 @@ class FormAddMsg extends React.Component {
           }
         }}
       />
-      {(error && <small className="position-absolute fixed-bottom position-absolute pl-3">{error}</small>)}
+      {(error && <small className="position-absolute fixed-bottom position-absolute pl-3 text-info">{error}</small>)}
     </>
   );
 
   handleSubmit = async (values) => {
     const username = this.context;
-    const { addMessageRequest, reset, currentChannelId } = this.props;
+    const {
+      addMessageRequest, reset, currentChannelId, refMessages,
+    } = this.props;
     const date = format(new Date(), 'dd MMM yyyy hh:mm:ss');
     const safeValues = makeValuesSafe(values);
     const data = {
@@ -65,7 +67,10 @@ class FormAddMsg extends React.Component {
       },
     };
     try {
-      await addMessageRequest({ data });
+      const cb = () => {
+        refMessages.current.lastElementChild.scrollIntoView(false);
+      };
+      await addMessageRequest({ data }, cb);
     } catch (e) {
       throw new SubmissionError({ _error: e.message });
     }
@@ -75,19 +80,20 @@ class FormAddMsg extends React.Component {
 
   render() {
     const {
-      handleSubmit, submitting, pristine,
+      handleSubmit, submitting, pristine, error,
     } = this.props;
     const renderedForm = (
       <form className="form-inline align-items-end pr-3 pb-3 pl-3" onSubmit={handleSubmit(this.handleSubmit)}>
-        <Field name="text" required disabled={submitting} validate={validateMessage} component={this.renderField} />
-        <input
-          hidden
-          ref={this.refSubmit}
-          type="submit"
-          disabled={pristine || submitting}
-          className="btn btn-primary btn-sm"
-          value="Send"
-        />
+        <div className="w-100 d-flex">
+          <Field name="text" required disabled={submitting} validate={validateMessage} component={this.renderField} />
+          <input
+            hidden
+            ref={this.refSubmit}
+            type="submit"
+            disabled={pristine || submitting}
+          />
+        </div>
+        {error && <small className="position-absolute fixed-bottom position-absolute pl-3 text-info">{error}</small>}
       </form>
     );
     return renderedForm;

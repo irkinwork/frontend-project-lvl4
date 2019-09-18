@@ -65,12 +65,12 @@ class App extends React.Component {
             <RootModal />
             <Row noGutters bsPrefix="row h-100">
               <Col bsPrefix="col-2 bg-info overflow-auto h-100">
-                <div className="pt-2 pb-2">
-                  <div className="h4 ml-2 text-light mb-0">Slack</div>
-                  <div className="btn d-flex align-items-center text-light mb-3">
+                <Row bsPrefix="pt-2 pb-2">
+                  <Col bsPrefix="col-12 h4 text-light mb-0">Slack</Col>
+                  <Col bsPrefix="col-12 btn d-flex align-items-center text-light mb-3">
                     <Fa icon={faUserSecret} />
                     <small className="ml-2">{user}</small>
-                  </div>
+                  </Col>
                   <button
                     className="btn btn btn-info w-100 text-left"
                     type="button"
@@ -81,7 +81,7 @@ class App extends React.Component {
                     <Fa icon={faPlusCircle} />
                     <span className="ml-2">Add a new channel</span>
                   </button>
-                </div>
+                </Row>
                 <Channels
                   items={channels.byId}
                   handleModalShow={showModal}
@@ -109,7 +109,7 @@ class App extends React.Component {
                   items={messages}
                   refMessages={this.refMessages}
                 />
-                <FormAddMsg />
+                <FormAddMsg refMessages={this.refMessages} />
               </Col>
             </Row>
           </Col>

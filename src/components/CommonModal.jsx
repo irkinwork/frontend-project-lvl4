@@ -20,22 +20,19 @@ class CommonModal extends React.PureComponent {
     };
     const onOk = () => {
       if (doAction) doAction();
-      hideModal();
     };
     return (
       <Modal show={isShow} onHide={onExit}>
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
-        {children && (
-          <Modal.Body>{children}</Modal.Body>
-        )}
+        <Modal.Body>{children}</Modal.Body>
         <Modal.Footer>
           <Button variant="primary" onClick={onOk}>
             {okText}
           </Button>
           <Button variant="secondary" onClick={onExit}>
-            Cancel
+            Close
           </Button>
         </Modal.Footer>
       </Modal>

@@ -10,6 +10,7 @@ const mapStateToProps = state => ({
 
 const actionCreators = {
   showModal: actions.showModal,
+  hideModal: actions.hideModal,
   removeChannelRequest: actions.removeChannelRequest,
   renameChannelRequest: actions.renameChannelRequest,
   addChannelRequest: actions.addChannelRequest,
@@ -25,13 +26,13 @@ class RootModal extends React.Component {
   render() {
     const {
       modal: { type, props }, removeChannelRequest,
-      renameChannelRequest, addChannelRequest,
+      renameChannelRequest, addChannelRequest, hideModal,
     } = this.props;
     const renameModal = (
       <Modal
         isShow={type === 'Rename'}
         title={`Rename #${props.name}`}
-        okText="Rename and close"
+        okText="Rename"
         doAction={() => {
           this.refSubmit.current.click();
         }}
@@ -51,8 +52,9 @@ class RootModal extends React.Component {
         isShow={type === 'Remove'}
         title={`Remove #${props.name}`}
         okText="Remove"
-        doAction={() => {
-          removeChannelRequest(props.id);
+        doAction={async () => {
+          await removeChannelRequest(props.id);
+          await hideModal();
         }}
       >
         {`Do you really want to remove #${props.name}?`}
@@ -62,7 +64,7 @@ class RootModal extends React.Component {
       <Modal
         isShow={type === 'Add'}
         title="Add a new channel"
-        okText="Add and close"
+        okText="Add"
         doAction={() => {
           this.refSubmit.current.click();
         }}

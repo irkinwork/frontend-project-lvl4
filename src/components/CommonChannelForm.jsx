@@ -39,13 +39,15 @@ class CommonChannelForm extends React.PureComponent {
 
   render() {
     const {
-      handleSubmit, submitting, pristine, error, refSubmit, okText,
+      handleSubmit, submitting, pristine, error, refSubmit,
     } = this.props;
     const renderedForm = (
       <form className="form-inline align-items-baseline" onSubmit={handleSubmit(this.handleSubmit)}>
-        <Field label="Add channel" name="name" required disabled={submitting} component={renderField} type="text" validate={this.validate} />
-        <input ref={refSubmit} type="submit" disabled={pristine || submitting} className="btn btn-primary flex-shrink-0" value={okText} />
-        {error && <div className="ml-3">{error}</div>}
+        <div className="w-100 d-flex">
+          <Field name="name" required disabled={submitting} component={renderField} type="text" validate={this.validate} />
+          <input hidden ref={refSubmit} type="submit" disabled={pristine || submitting} />
+        </div>
+        {error && <div className="text-info mt-1">{error}</div>}
       </form>
     );
     return renderedForm;
