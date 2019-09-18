@@ -4,7 +4,9 @@ import { unescape } from 'validator';
 
 const Messages = ({ items, currentChannelId, refMessages }) => {
   useEffect(() => {
-    refMessages.current.lastElementChild.scrollIntoView(false);
+    if (refMessages.current.lastElementChild) {
+      refMessages.current.lastElementChild.scrollIntoView(false);
+    }
   }, []);
 
   const messages = items
