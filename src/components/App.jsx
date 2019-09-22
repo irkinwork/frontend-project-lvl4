@@ -68,7 +68,6 @@ class App extends React.Component {
     }
   }
 
-
   render() {
     const {
       currentChannelId, messages,

@@ -39,7 +39,6 @@ class RootModal extends React.Component {
           form="addChannelForm"
           onSubmit={this.handleSubmit(addChannel)}
         />
-
       </Modal>
     );
     const renameModal = (

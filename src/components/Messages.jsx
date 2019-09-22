@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-indent */
 import React, { useEffect } from 'react';
 import { Element } from 'react-scroll';
 import { uniqueId } from 'lodash';
