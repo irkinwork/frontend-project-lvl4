@@ -1,4 +1,5 @@
 import React from 'react';
+import { isAlphanumeric, isLowercase } from 'validator';
 import { SubmissionError } from 'redux-form';
 import Modal from './CommonModal';
 import CommonChannelForm from './CommonChannelForm';
@@ -6,13 +7,30 @@ import connect from '../connect';
 
 const mapStateToProps = state => ({
   modal: state.modal,
+  channelsNames: Object.values(state.channels.byId).map(item => item.name),
 });
 
 @connect(mapStateToProps)
 class RootModal extends React.Component {
   handleSubmit = doAction => async (values) => {
-    const { modal: { props: { id } } } = this.props;
+    const { modal: { props: { id } }, channelsNames } = this.props;
     const data = { attributes: { ...values } };
+    const { name } = values;
+    if (name && (!isAlphanumeric(name, 'en-US') || !isLowercase(name))) {
+      throw new SubmissionError({
+        name: 'Channel name must be alphanumeric, in English, and lowercased',
+      });
+    }
+    if (name && channelsNames.includes(name)) {
+      throw new SubmissionError({
+        name: 'Sorry, channel with this name already exists',
+      });
+    }
+    if ((name.trim() === '')) {
+      throw new SubmissionError({
+        name: 'You can\'t add channel with empty name',
+      });
+    }
     try {
       await doAction({ data }, id);
     } catch (e) {
@@ -24,7 +42,8 @@ class RootModal extends React.Component {
     const {
       modal: { type, props }, removeChannel,
       renameChannel, addChannel, hideModal,
-      submit,
+      submit, scrollToBottom,
+
     } = this.props;
     const addModal = (
       <Modal
@@ -38,6 +57,7 @@ class RootModal extends React.Component {
         <CommonChannelForm
           form="addChannelForm"
           onSubmit={this.handleSubmit(addChannel)}
+          initialValues={{ name: '' }}
         />
       </Modal>
     );
@@ -63,7 +83,7 @@ class RootModal extends React.Component {
         title={`Remove #${props.name}`}
         okText="Remove"
         doAction={async () => {
-          await removeChannel(props.id);
+          await removeChannel(props.id, scrollToBottom);
           await hideModal();
         }}
       >

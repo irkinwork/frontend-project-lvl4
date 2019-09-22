@@ -72,12 +72,13 @@ export const renameChannel = ({ data }, id) => async (dispatch) => {
   }
 };
 
-export const removeChannel = id => async (dispatch) => {
+export const removeChannel = (id, cb) => async (dispatch) => {
   dispatch(removeChannelRequest());
   try {
     await axios.delete(routes.channelPath(id));
     await dispatch(removeChannelSuccess());
     await dispatch(setInitialCurrentChannel());
+    await cb();
   } catch (e) {
     dispatch(removeChannelFailure(e));
   }

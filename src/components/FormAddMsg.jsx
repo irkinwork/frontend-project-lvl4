@@ -5,7 +5,7 @@ import {
 import TextareaAutosize from 'react-autosize-textarea';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 import connect from '../connect';
-import { UserContext, validateFieldMessage } from '../lib';
+import { UserContext } from '../lib';
 
 const mapStateToProps = state => ({
   currentChannelId: state.currentChannel.id,
@@ -20,7 +20,7 @@ class FormAddMsg extends React.Component {
     input, meta: { error },
   }) => {
     const {
-      text, reset, submit, pristine, submitting, change,
+      text, reset, submit, change,
     } = this.props;
     return (
       <KeyboardEventHandler
@@ -30,8 +30,7 @@ class FormAddMsg extends React.Component {
           switch (key) {
             case 'enter': {
               e.preventDefault();
-              const disabled = pristine || submitting;
-              if (!disabled) submit('msgForm');
+              submit('msgForm');
               reset();
               break;
             }
@@ -60,7 +59,7 @@ class FormAddMsg extends React.Component {
     const renderedForm = (
       <form className="form-inline align-items-end pr-3 pb-3 pl-3">
         <div className="w-100 d-flex">
-          <Field name="text" required disabled={submitting} validate={validateFieldMessage} component={this.renderField} />
+          <Field name="text" required disabled={submitting} component={this.renderField} />
         </div>
         {error && <small className="position-absolute fixed-bottom pl-3 text-info">{error}</small>}
       </form>

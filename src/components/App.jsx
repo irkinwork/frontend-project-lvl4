@@ -61,6 +61,13 @@ class App extends React.Component {
         ...safeValues, channelId: currentChannelId, username, date,
       },
     };
+    const { text } = values;
+    if (text.trim() === '') {
+      throw new SubmissionError({ text: 'You can\'t send empty message' });
+    }
+    if (text.length > 10000) {
+      throw new SubmissionError({ text: 'The maximum length should be 10 000 symbols' });
+    }
     try {
       await addMessage({ data }, this.scrollToBottom);
     } catch (e) {
@@ -78,7 +85,7 @@ class App extends React.Component {
       <UserContext.Provider value={username}>
         {isLoaded ? (
           <Col bsPrefix="col-12 h-100 p-0">
-            <RootModal />
+            <RootModal scrollToBottom={this.scrollToBottom} />
             <Row noGutters bsPrefix="row h-100">
               <Col bsPrefix="col-2 bg-info overflow-auto h-100">
                 <Row bsPrefix="pt-2 pb-2">

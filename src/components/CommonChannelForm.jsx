@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { validateChannel } from '../lib';
 
 const renderField = ({
   input, label, type, meta: { touched, error },
@@ -21,19 +20,14 @@ const mapStateToProps = (state) => {
 
 @connect(mapStateToProps)
 class CommonChannelForm extends React.PureComponent {
-  validate = (name) => {
-    const { channelsNames } = this.props;
-    return validateChannel(name, channelsNames);
-  };
-
   render() {
     const {
-      submitting, error, handleSubmit,
+      submitting, error,
     } = this.props;
     const renderedForm = (
-      <form className="form-inline align-items-baseline" onSubmit={handleSubmit}>
+      <form className="form-inline align-items-baseline">
         <div className="w-100 d-flex">
-          <Field name="name" required disabled={submitting} component={renderField} type="text" validate={this.validate} />
+          <Field name="name" required disabled={submitting} component={renderField} type="text" />
         </div>
         {error && <div className="text-info mt-1">{error}</div>}
       </form>
