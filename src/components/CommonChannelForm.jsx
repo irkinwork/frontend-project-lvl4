@@ -22,14 +22,14 @@ const mapStateToProps = (state) => {
 class CommonChannelForm extends React.PureComponent {
   render() {
     const {
-      submitting, error,
+      submitting, error, handleSubmit,
     } = this.props;
     const renderedForm = (
-      <form className="form-inline align-items-baseline">
+      <form className="form-inline align-items-baseline" onSubmit={handleSubmit}>
         <div className="w-100 d-flex">
           <Field name="name" required disabled={submitting} component={renderField} type="text" />
         </div>
-        {error && <div className="text-info mt-1">{error}</div>}
+        {error && <small className="text-info mt-1">{error}</small>}
       </form>
     );
     return renderedForm;
