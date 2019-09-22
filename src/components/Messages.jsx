@@ -1,18 +1,18 @@
+/* eslint-disable react/jsx-indent */
 import React, { useEffect } from 'react';
+import { Element } from 'react-scroll';
 import { uniqueId } from 'lodash';
 import { unescape } from 'validator';
 
-const Messages = ({ items, currentChannelId, refMessages }) => {
+const Messages = ({ items, currentChannelId, scrollToBottom }) => {
   useEffect(() => {
-    if (refMessages.current.lastElementChild) {
-      refMessages.current.lastElementChild.scrollIntoView(false);
-    }
+    scrollToBottom();
   }, []);
 
   const messages = items
     .filter(item => item.channelId === currentChannelId)
     .map((item) => {
-      const textLines = item.text && item.text.split('\n');
+      const textLines = item.text ? item.text.split('\n') : [];
       return (
         <div key={item.id} className="mt-1 mb-1">
           <strong className="mr-1">{item.username}</strong>
@@ -21,6 +21,11 @@ const Messages = ({ items, currentChannelId, refMessages }) => {
         </div>
       );
     });
-  return <div ref={refMessages} className="overflow-auto mt-auto pl-3">{messages}</div>;
+  return (
+    <div id="chat-container" className="overflow-auto mt-auto pl-3">
+      {messages}
+      <Element name="last-message" />
+    </div>
+  );
 };
 export default Messages;

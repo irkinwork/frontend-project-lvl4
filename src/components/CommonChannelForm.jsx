@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Field, reduxForm, SubmissionError } from 'redux-form';
+import { Field, reduxForm } from 'redux-form';
 import { validateChannel } from '../lib';
 
 const renderField = ({
@@ -8,7 +8,7 @@ const renderField = ({
 }) => (
   <div className="d-flex flex-fill flex-column">
     <input {...input} placeholder={label} type={type} className="p-1" />
-    {touched && (error && <small>{error}</small>)}
+    {touched && (error && <small className="text-info">{error}</small>)}
   </div>
 );
 
@@ -21,17 +21,6 @@ const mapStateToProps = (state) => {
 
 @connect(mapStateToProps)
 class CommonChannelForm extends React.PureComponent {
-  handleSubmit = async (values) => {
-    const { doAction, reset, id } = this.props;
-    const data = { attributes: { ...values } };
-    try {
-      await doAction({ data }, id);
-    } catch (e) {
-      throw new SubmissionError({ _error: e.message });
-    }
-    reset();
-  }
-
   validate = (name) => {
     const { channelsNames } = this.props;
     return validateChannel(name, channelsNames);
@@ -39,13 +28,12 @@ class CommonChannelForm extends React.PureComponent {
 
   render() {
     const {
-      handleSubmit, submitting, pristine, error, refSubmit,
+      submitting, error, handleSubmit,
     } = this.props;
     const renderedForm = (
-      <form className="form-inline align-items-baseline" onSubmit={handleSubmit(this.handleSubmit)}>
+      <form className="form-inline align-items-baseline" onSubmit={handleSubmit}>
         <div className="w-100 d-flex">
           <Field name="name" required disabled={submitting} component={renderField} type="text" validate={this.validate} />
-          <input hidden ref={refSubmit} type="submit" disabled={pristine || submitting} />
         </div>
         {error && <div className="text-info mt-1">{error}</div>}
       </form>

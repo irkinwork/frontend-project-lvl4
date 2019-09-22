@@ -1,4 +1,5 @@
 import update from 'immutability-helper';
+import { keyBy } from 'lodash';
 import { combineReducers } from 'redux';
 import { handleActions } from 'redux-actions';
 import { reducer as form } from 'redux-form';
@@ -6,7 +7,7 @@ import * as actions from '../actions';
 
 const channels = handleActions({
   [actions.getChannelsFromGon](state, { payload }) {
-    const byId = payload.reduce((acc, item) => ({ ...acc, [item.id]: item }), {});
+    const byId = keyBy(payload, 'id');
     const allIds = payload.map(item => item.id);
     return { byId, allIds };
   },

@@ -1,13 +1,8 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
-import * as actions from '../actions';
+import connect from '../connect';
 
-const actionCreators = {
-  hideModal: actions.hideModal,
-};
-
-@connect(null, actionCreators)
+@connect()
 class CommonModal extends React.PureComponent {
   render() {
     const {

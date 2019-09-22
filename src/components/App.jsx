@@ -1,15 +1,17 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { hot } from 'react-hot-loader/root';
 import cookies from 'js-cookie';
 import { FontAwesomeIcon as Fa } from '@fortawesome/react-fontawesome';
 import { faPlusCircle, faUserSecret } from '@fortawesome/free-solid-svg-icons';
 import { Col, Row, Spinner } from 'react-bootstrap';
+import { format } from 'date-fns';
+import { SubmissionError } from 'redux-form';
+import { scroller, Events, scrollSpy } from 'react-scroll';
 import FormAddMsg from './FormAddMsg';
 import Channels from './Channels';
 import Messages from './Messages';
-import * as actions from '../actions';
-import { UserContext } from '../lib';
+import connect from '../connect';
+import { UserContext, makeValuesSafe } from '../lib';
 import RootModal from './RootModal';
 import Header from './Header';
 
@@ -25,21 +27,11 @@ const mapStateToProps = ({
   };
   return props;
 };
+const username = cookies.get('user');
 
-const actionCreators = {
-  setCurrentChannel: actions.setCurrentChannel,
-  getChannelsFromGon: actions.getChannelsFromGon,
-  getMessagesFromGon: actions.getMessagesFromGon,
-  showModal: actions.showModal,
-  setIsLoaded: actions.setIsLoaded,
-};
-
-@connect(mapStateToProps, actionCreators)
+@connect(mapStateToProps)
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.refMessages = React.createRef();
-  }
+  static contextType = UserContext;
 
   async componentDidMount() {
     const {
@@ -51,15 +43,40 @@ class App extends React.Component {
     await setIsLoaded();
   }
 
+  scrollToBottom = () => {
+    Events.scrollEvent.register('begin');
+    Events.scrollEvent.register('end');
+    scrollSpy.update();
+    scroller.scrollTo('last-message', {
+      containerId: 'chat-container',
+    });
+  }
+
+  handleMsgSubmit = async (values) => {
+    const { addMessage, currentChannelId } = this.props;
+    const date = format(new Date(), 'dd MMM yyyy hh:mm:ss');
+    const safeValues = makeValuesSafe(values);
+    const data = {
+      attributes: {
+        ...safeValues, channelId: currentChannelId, username, date,
+      },
+    };
+    try {
+      await addMessage({ data }, this.scrollToBottom);
+    } catch (e) {
+      throw new SubmissionError({ _error: e.message });
+    }
+  }
+
+
   render() {
     const {
       currentChannelId, messages,
       setCurrentChannel, channels,
       showModal, isLoaded, currentChannel,
     } = this.props;
-    const user = cookies.get('user');
     return (
-      <UserContext.Provider value={user}>
+      <UserContext.Provider value={username}>
         {isLoaded ? (
           <Col bsPrefix="col-12 h-100 p-0">
             <RootModal />
@@ -69,7 +86,7 @@ class App extends React.Component {
                   <Col bsPrefix="col-12 h4 text-light mb-0">Slack</Col>
                   <Col bsPrefix="col-12 btn d-flex align-items-center text-light mb-3">
                     <Fa icon={faUserSecret} />
-                    <small className="ml-2">{user}</small>
+                    <small className="ml-2">{username}</small>
                   </Col>
                   <button
                     className="btn btn btn-info w-100 text-left"
@@ -88,9 +105,7 @@ class App extends React.Component {
                   currentChannelId={currentChannelId}
                   handleSetCurrentChannel={item => async () => {
                     await setCurrentChannel(item);
-                    if (this.refMessages.current.lastElementChild) {
-                      await this.refMessages.current.lastElementChild.scrollIntoView(false);
-                    }
+                    this.scrollToBottom();
                   }}
                 />
               </Col>
@@ -107,9 +122,9 @@ class App extends React.Component {
                 <Messages
                   currentChannelId={currentChannelId}
                   items={messages}
-                  refMessages={this.refMessages}
+                  scrollToBottom={this.scrollToBottom}
                 />
-                <FormAddMsg refMessages={this.refMessages} />
+                <FormAddMsg initialValues={{ text: '' }} onSubmit={this.handleMsgSubmit} form="msgForm" />
               </Col>
             </Row>
           </Col>

@@ -8,17 +8,17 @@ export const validateChannel = (name, names) => {
   if (name && names.includes(name)) {
     return 'Sorry, channel with this name already exists';
   }
-  return undefined;
+  return null;
 };
 
-export const validateMessage = (msg) => {
-  if (msg && msg.trim() === '') {
+export const validateFieldMessage = (msg) => {
+  if ((msg && msg.trim() === '')) {
     return 'You can\'t send empty message';
   }
   if (msg && msg.length > 10000) {
-    return 'The maximum length should be 10 000 symbols';
+    return 'The maximum length should be 10 000 symbols';
   }
-  return undefined;
+  return null;
 };
 
 export const makeValuesSafe = values => Object.keys(values).reduce((acc, item) => {

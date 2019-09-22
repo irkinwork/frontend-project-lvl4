@@ -1,105 +1,72 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { format } from 'date-fns';
-import { Field, reduxForm, SubmissionError } from 'redux-form';
-import autosize from 'autosize';
-import * as actions from '../actions';
-import { UserContext, validateMessage, makeValuesSafe } from '../lib';
+import {
+  Field, reduxForm, formValueSelector,
+} from 'redux-form';
+import TextareaAutosize from 'react-autosize-textarea';
+import KeyboardEventHandler from 'react-keyboard-event-handler';
+import connect from '../connect';
+import { UserContext, validateFieldMessage } from '../lib';
 
-const mapStateToProps = ({ currentChannel }) => ({ currentChannelId: currentChannel.id });
+const mapStateToProps = state => ({
+  currentChannelId: state.currentChannel.id,
+  text: formValueSelector('msgForm')(state, 'text'),
+});
 
-const actionCreators = {
-  addMessageRequest: actions.addMessageRequest,
-};
-
-@connect(mapStateToProps, actionCreators)
+@connect(mapStateToProps)
 class FormAddMsg extends React.Component {
   static contextType = UserContext;
 
-  constructor(props) {
-    super(props);
-    this.refTextarea = React.createRef();
-    this.refSubmit = React.createRef();
-  }
-
-  componentDidMount() {
-    autosize(this.refTextarea.current);
-  }
-
   renderField = ({
     input, meta: { error },
-  }) => (
-    <>
-      <textarea
-        ref={this.refTextarea}
-        className="flex-fill pre-scrollable w-100"
-        {...input}
-        onKeyDown={(e) => {
-          const keysToResize = e.shiftKey || e.ctrlKey;
-          if (e.key === 'Enter' && !keysToResize) {
-            e.preventDefault();
-            if (this.refTextarea.current.value.trim() !== '') {
-              this.refSubmit.current.click();
-              return;
+  }) => {
+    const {
+      text, reset, submit, pristine, submitting, change,
+    } = this.props;
+    return (
+      <KeyboardEventHandler
+        className="w-100"
+        handleKeys={['ctrl+enter', 'enter']}
+        onKeyEvent={(key, e) => {
+          switch (key) {
+            case 'enter': {
+              e.preventDefault();
+              const disabled = pristine || submitting;
+              if (!disabled) submit('msgForm');
+              reset();
+              break;
             }
-          }
-          if (e.key === 'Enter' && keysToResize) {
-            e.preventDefault();
-            this.refTextarea.current.value = `${this.refTextarea.current.value}\n`;
-            autosize.update(this.refTextarea.current);
+            case 'ctrl+enter': {
+              change('msgForm', 'text', `${text}\n`);
+              break;
+            }
+            default: break;
           }
         }}
-      />
-      {(error && <small className="position-absolute fixed-bottom position-absolute pl-3 text-info">{error}</small>)}
-    </>
-  );
-
-  handleSubmit = async (values) => {
-    const username = this.context;
-    const {
-      addMessageRequest, reset, currentChannelId, refMessages,
-    } = this.props;
-    const date = format(new Date(), 'dd MMM yyyy hh:mm:ss');
-    const safeValues = makeValuesSafe(values);
-    const data = {
-      attributes: {
-        ...safeValues, channelId: currentChannelId, username, date,
-      },
-    };
-    try {
-      const cb = () => {
-        refMessages.current.lastElementChild.scrollIntoView(false);
-      };
-      await addMessageRequest({ data }, cb);
-    } catch (e) {
-      throw new SubmissionError({ _error: e.message });
-    }
-    reset();
-    autosize.update(this.refTextarea.current);
+      >
+        <TextareaAutosize
+          rows={2}
+          className="flex-fill pre-scrollable w-100"
+          {...input}
+        />
+        {(error && <small className="position-absolute fixed-bottom pl-3 text-info">{error}</small>)}
+      </KeyboardEventHandler>
+    );
   }
 
   render() {
     const {
-      handleSubmit, submitting, pristine, error,
+      submitting, error,
     } = this.props;
     const renderedForm = (
-      <form className="form-inline align-items-end pr-3 pb-3 pl-3" onSubmit={handleSubmit(this.handleSubmit)}>
+      <form className="form-inline align-items-end pr-3 pb-3 pl-3">
         <div className="w-100 d-flex">
-          <Field name="text" required disabled={submitting} validate={validateMessage} component={this.renderField} />
-          <input
-            hidden
-            ref={this.refSubmit}
-            type="submit"
-            disabled={pristine || submitting}
-          />
+          <Field name="text" required disabled={submitting} validate={validateFieldMessage} component={this.renderField} />
         </div>
-        {error && <small className="position-absolute fixed-bottom position-absolute pl-3 text-info">{error}</small>}
+        {error && <small className="position-absolute fixed-bottom pl-3 text-info">{error}</small>}
       </form>
     );
     return renderedForm;
   }
 }
 
-export default reduxForm({
-  form: 'msgForm',
-})(FormAddMsg);
+export default reduxForm()(FormAddMsg);

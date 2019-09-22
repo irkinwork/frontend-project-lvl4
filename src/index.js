@@ -4,7 +4,7 @@ import cookies from 'js-cookie';
 import gon from 'gon';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../assets/application.css';
-import init, { store } from './index.jsx';
+import init, { store } from './init';
 import * as actions from './actions';
 
 const io = openSocket();
