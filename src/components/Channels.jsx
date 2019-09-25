@@ -3,25 +3,25 @@ import cn from 'classnames';
 import { ListGroup } from 'react-bootstrap';
 
 const Channels = ({
-  items, handleSetCurrentChannel,
+  items, handleSetCurrentChannelId,
   currentChannelId,
 }) => (
   <ListGroup variant="flush">
-    {Object.values(items).map((item) => {
+    {Object.values(items).map(({ id, name }) => {
       const btnClass = cn({
-        'btn-info bg-info': item.id !== currentChannelId,
-        'text-white': item.id !== currentChannelId,
-        'btn-light': item.id === currentChannelId,
+        'btn-info bg-info': id !== currentChannelId,
+        'text-white': id !== currentChannelId,
+        'btn-light': id === currentChannelId,
         'list-group-item shadow-none btn text-left pt-1 pb-1': true,
       });
       return (
         <ListGroup.Item
-          key={item.name}
+          key={name}
           bsPrefix={btnClass}
           as="button"
-          onClick={handleSetCurrentChannel(item)}
+          onClick={handleSetCurrentChannelId(id)}
         >
-          {`#${item.name}`}
+          {`#${name}`}
         </ListGroup.Item>
       );
     })}

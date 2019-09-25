@@ -8,7 +8,6 @@ import connect from '../connect';
 import { UserContext } from '../lib';
 
 const mapStateToProps = state => ({
-  currentChannelId: state.currentChannel.id,
   text: formValueSelector('msgForm')(state, 'text'),
 });
 

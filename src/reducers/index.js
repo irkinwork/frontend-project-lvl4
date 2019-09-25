@@ -32,15 +32,15 @@ const channels = handleActions({
   },
 }, { byId: {}, allIds: [] });
 
-const initialCurrentChannel = { id: 1, name: 'general', removable: false };
-const currentChannel = handleActions({
-  [actions.setCurrentChannel](state, { payload }) {
+const initialCurrentChannelId = 1;
+const currentChannelId = handleActions({
+  [actions.setCurrentChannelId](state, { payload }) {
     return payload;
   },
-  [actions.setInitialCurrentChannel]() {
-    return initialCurrentChannel;
+  [actions.setInitialCurrentChannelId]() {
+    return initialCurrentChannelId;
   },
-}, initialCurrentChannel);
+}, initialCurrentChannelId);
 
 const messages = handleActions({
   [actions.getMessagesFromGon](state, { payload }) {
@@ -79,6 +79,6 @@ export default combineReducers({
   modal,
   messages,
   channels,
-  currentChannel,
+  currentChannelId,
   form,
 });

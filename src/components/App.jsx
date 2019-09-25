@@ -13,14 +13,14 @@ import RootModal from './RootModal';
 import Header from './Header';
 
 const mapStateToProps = ({
-  currentChannel, messages, channels, isLoaded,
+  currentChannelId, messages, channels, isLoaded,
 }) => {
   const props = {
     messages,
-    channels,
+    channels: channels.byId,
     isLoaded,
-    currentChannel,
-    currentChannelId: currentChannel.id,
+    currentChannel: channels.byId[currentChannelId],
+    currentChannelId,
   };
   return props;
 };
@@ -43,7 +43,7 @@ class App extends React.Component {
   render() {
     const {
       currentChannelId, messages,
-      setCurrentChannel, channels,
+      setCurrentChannelId, channels,
       showModal, isLoaded, currentChannel,
       addMessage,
     } = this.props;
@@ -72,11 +72,11 @@ class App extends React.Component {
                   </button>
                 </Row>
                 <Channels
-                  items={channels.byId}
+                  items={channels}
                   handleModalShow={showModal}
                   currentChannelId={currentChannelId}
-                  handleSetCurrentChannel={item => async () => {
-                    await setCurrentChannel(item);
+                  handleSetCurrentChannelId={id => async () => {
+                    await setCurrentChannelId(id);
                     scrollToBottom();
                   }}
                 />
