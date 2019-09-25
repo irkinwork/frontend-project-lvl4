@@ -2,8 +2,9 @@ import React, { useEffect } from 'react';
 import { Element } from 'react-scroll';
 import { uniqueId } from 'lodash';
 import { unescape } from 'validator';
+import { scrollToBottom } from '../lib';
 
-const Messages = ({ items, currentChannelId, scrollToBottom }) => {
+const Messages = ({ items, currentChannelId }) => {
   useEffect(() => {
     scrollToBottom();
   }, []);
