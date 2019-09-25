@@ -69,8 +69,8 @@ const modal = handleActions({
 }, modalInitialState);
 
 const isLoaded = handleActions({
-  [actions.setIsLoaded]() {
-    return true;
+  [actions.setIsLoaded](state, { payload }) {
+    return payload;
   },
 }, false);
 

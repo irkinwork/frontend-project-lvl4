@@ -40,7 +40,7 @@ class App extends React.Component {
     } = this.props;
     await getChannelsFromGon(gon.channels);
     await getMessagesFromGon(gon.messages);
-    await setIsLoaded();
+    await setIsLoaded(true);
   }
 
   scrollToBottom = () => {
