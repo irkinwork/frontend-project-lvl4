@@ -34,12 +34,11 @@ export const removeChannelFromStore = createAction('CHANNEL_REMOVE_FROM_STORE');
 export const renameChannelFromStore = createAction('CHANNEL_RENAME_FROM_STORE');
 export const setIsLoaded = createAction('APP_IS_LOADED');
 
-export const addMessage = ({ data }, cb) => async (dispatch) => {
+export const addMessage = ({ data }) => async (dispatch) => {
   dispatch(addMessageRequest());
   try {
     const { channelId } = data.attributes;
     await axios.post(routes.channelMessagesPath(channelId), { data });
-    await cb();
     await dispatch(addMessageSuccess());
   } catch (e) {
     dispatch(addMessageFailure(e));
@@ -72,13 +71,13 @@ export const renameChannel = ({ data }, id) => async (dispatch) => {
   }
 };
 
-export const removeChannel = (id, cb) => async (dispatch) => {
+export const removeChannel = id => async (dispatch) => {
   dispatch(removeChannelRequest());
   try {
     await axios.delete(routes.channelPath(id));
     await dispatch(removeChannelSuccess());
     await dispatch(setInitialCurrentChannel());
-    await cb();
+    await dispatch(hideModal());
   } catch (e) {
     dispatch(removeChannelFailure(e));
   }

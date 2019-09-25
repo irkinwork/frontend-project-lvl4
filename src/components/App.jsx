@@ -85,7 +85,7 @@ class App extends React.Component {
       <UserContext.Provider value={username}>
         {isLoaded ? (
           <Col bsPrefix="col-12 h-100 p-0">
-            <RootModal scrollToBottom={this.scrollToBottom} />
+            <RootModal />
             <Row noGutters bsPrefix="row h-100">
               <Col bsPrefix="col-2 bg-info overflow-auto h-100">
                 <Row bsPrefix="pt-2 pb-2">
