@@ -18,7 +18,7 @@ class ModalRename extends React.Component {
     } = this.props;
     return (
       <Modal
-        title={`Rename ${name}`}
+        title={`Rename #${name}`}
         okText="Rename"
         doAction={() => {
           submit('renameChannelForm');

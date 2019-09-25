@@ -15,7 +15,7 @@ class ModalRemove extends React.Component {
     } = this.props;
     return (
       <Modal
-        title={`Remove ${name}`}
+        title={`Remove #${name}`}
         okText="Remove"
         doAction={async () => {
           await removeChannel(id, scrollToBottom);
