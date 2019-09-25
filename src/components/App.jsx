@@ -4,26 +4,23 @@ import cookies from 'js-cookie';
 import { FontAwesomeIcon as Fa } from '@fortawesome/react-fontawesome';
 import { faPlusCircle, faUserSecret } from '@fortawesome/free-solid-svg-icons';
 import { Col, Row, Spinner } from 'react-bootstrap';
-import { format } from 'date-fns';
-import { SubmissionError } from 'redux-form';
-import { scroller, Events, scrollSpy } from 'react-scroll';
 import FormAddMsg from './FormAddMsg';
 import Channels from './Channels';
 import Messages from './Messages';
 import connect from '../connect';
-import { UserContext, makeValuesSafe } from '../lib';
+import { UserContext, scrollToBottom, handleMsgSubmit } from '../lib';
 import RootModal from './RootModal';
 import Header from './Header';
 
 const mapStateToProps = ({
-  currentChannel, messages, channels, isLoaded,
+  currentChannelId, messages, channels, isLoaded,
 }) => {
   const props = {
     messages,
-    channels,
+    channels: channels.byId,
     isLoaded,
-    currentChannel,
-    currentChannelId: currentChannel.id,
+    currentChannel: channels.byId[currentChannelId],
+    currentChannelId,
   };
   return props;
 };
@@ -40,52 +37,21 @@ class App extends React.Component {
     } = this.props;
     await getChannelsFromGon(gon.channels);
     await getMessagesFromGon(gon.messages);
-    await setIsLoaded();
-  }
-
-  scrollToBottom = () => {
-    Events.scrollEvent.register('begin');
-    Events.scrollEvent.register('end');
-    scrollSpy.update();
-    scroller.scrollTo('last-message', {
-      containerId: 'chat-container',
-    });
-  }
-
-  handleMsgSubmit = async (values) => {
-    const { addMessage, currentChannelId } = this.props;
-    const date = format(new Date(), 'dd MMM yyyy hh:mm:ss');
-    const safeValues = makeValuesSafe(values);
-    const data = {
-      attributes: {
-        ...safeValues, channelId: currentChannelId, username, date,
-      },
-    };
-    const { text } = values;
-    if (text.trim() === '') {
-      throw new SubmissionError({ text: 'You can\'t send empty message' });
-    }
-    if (text.length > 10000) {
-      throw new SubmissionError({ text: 'The maximum length should be 10 000 symbols' });
-    }
-    try {
-      await addMessage({ data }, this.scrollToBottom);
-    } catch (e) {
-      throw new SubmissionError({ _error: e.message });
-    }
+    await setIsLoaded(true);
   }
 
   render() {
     const {
       currentChannelId, messages,
-      setCurrentChannel, channels,
+      setCurrentChannelId, channels,
       showModal, isLoaded, currentChannel,
+      addMessage,
     } = this.props;
     return (
       <UserContext.Provider value={username}>
         {isLoaded ? (
           <Col bsPrefix="col-12 h-100 p-0">
-            <RootModal scrollToBottom={this.scrollToBottom} />
+            <RootModal />
             <Row noGutters bsPrefix="row h-100">
               <Col bsPrefix="col-2 bg-info overflow-auto h-100">
                 <Row bsPrefix="pt-2 pb-2">
@@ -106,12 +72,12 @@ class App extends React.Component {
                   </button>
                 </Row>
                 <Channels
-                  items={channels.byId}
+                  items={channels}
                   handleModalShow={showModal}
                   currentChannelId={currentChannelId}
-                  handleSetCurrentChannel={item => async () => {
-                    await setCurrentChannel(item);
-                    this.scrollToBottom();
+                  handleSetCurrentChannelId={id => async () => {
+                    await setCurrentChannelId(id);
+                    scrollToBottom();
                   }}
                 />
               </Col>
@@ -128,9 +94,8 @@ class App extends React.Component {
                 <Messages
                   currentChannelId={currentChannelId}
                   items={messages}
-                  scrollToBottom={this.scrollToBottom}
                 />
-                <FormAddMsg initialValues={{ text: '' }} onSubmit={this.handleMsgSubmit} form="msgForm" />
+                <FormAddMsg initialValues={{ text: '' }} onSubmit={handleMsgSubmit(addMessage, currentChannelId, username)} form="msgForm" />
               </Col>
             </Row>
           </Col>

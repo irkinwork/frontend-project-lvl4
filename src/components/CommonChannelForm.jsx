@@ -19,6 +19,7 @@ const mapStateToProps = (state) => {
 };
 
 @connect(mapStateToProps)
+@reduxForm()
 class CommonChannelForm extends React.PureComponent {
   render() {
     const {
@@ -36,4 +37,4 @@ class CommonChannelForm extends React.PureComponent {
   }
 }
 
-export default reduxForm()(CommonChannelForm);
+export default CommonChannelForm;

@@ -6,7 +6,7 @@ import connect from '../connect';
 class CommonModal extends React.PureComponent {
   render() {
     const {
-      children, isShow, hideModal, doAction, title = '',
+      children, hideModal, doAction, title = '',
       okText = 'OK',
     } = this.props;
     const onExit = (e) => {
@@ -17,7 +17,7 @@ class CommonModal extends React.PureComponent {
       if (doAction) doAction();
     };
     return (
-      <Modal show={isShow} onHide={onExit}>
+      <Modal show onHide={onExit}>
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>

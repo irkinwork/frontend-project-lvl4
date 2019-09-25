@@ -8,11 +8,11 @@ import connect from '../connect';
 import { UserContext } from '../lib';
 
 const mapStateToProps = state => ({
-  currentChannelId: state.currentChannel.id,
   text: formValueSelector('msgForm')(state, 'text'),
 });
 
 @connect(mapStateToProps)
+@reduxForm()
 class FormAddMsg extends React.Component {
   static contextType = UserContext;
 
@@ -68,4 +68,4 @@ class FormAddMsg extends React.Component {
   }
 }
 
-export default reduxForm()(FormAddMsg);
+export default FormAddMsg;
