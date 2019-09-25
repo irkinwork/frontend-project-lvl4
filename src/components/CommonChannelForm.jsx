@@ -17,6 +17,7 @@ const mapStateToProps = (state) => {
   };
   return props;
 };
+
 @reduxForm()
 @connect(mapStateToProps)
 class CommonChannelForm extends React.PureComponent {
