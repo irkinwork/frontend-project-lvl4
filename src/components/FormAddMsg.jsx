@@ -11,8 +11,8 @@ const mapStateToProps = state => ({
   text: formValueSelector('msgForm')(state, 'text'),
 });
 
-@connect(mapStateToProps)
 @reduxForm()
+@connect(mapStateToProps)
 class FormAddMsg extends React.Component {
   static contextType = UserContext;
 
