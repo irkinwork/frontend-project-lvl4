@@ -12,6 +12,7 @@ const mapStateToProps = state => ({
   text: formValueSelector('msgForm')(state, 'text'),
 });
 
+@reduxForm()
 @connect(mapStateToProps)
 class FormAddMsg extends React.Component {
   static contextType = UserContext;
@@ -68,4 +69,4 @@ class FormAddMsg extends React.Component {
   }
 }
 
-export default reduxForm()(FormAddMsg);
+export default FormAddMsg;
