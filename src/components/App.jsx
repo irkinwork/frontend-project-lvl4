@@ -14,16 +14,14 @@ import Header from './Header';
 
 const mapStateToProps = ({
   currentChannelId, messages, channels, isLoaded,
-}) => {
-  const props = {
-    messages,
-    channels: channels.byId,
-    isLoaded,
-    currentChannel: channels.byId[currentChannelId],
-    currentChannelId,
-  };
-  return props;
-};
+}) => ({
+  channels: Object.values(channels.byId),
+  isLoaded,
+  currentChannel: channels.byId[currentChannelId],
+  currentChannelId,
+  messages: messages.filter(item => item.channelId === currentChannelId),
+});
+
 const username = cookies.get('user');
 
 @connect(mapStateToProps)
@@ -54,7 +52,7 @@ class App extends React.Component {
             <RootModal />
             <Row noGutters bsPrefix="row h-100">
               <Col bsPrefix="col-2 bg-info overflow-auto h-100">
-                <Row bsPrefix="pt-2 pb-2">
+                <Row bsPrefix="py-2">
                   <Col bsPrefix="col-12 h4 text-light mb-0">Slack</Col>
                   <Col bsPrefix="col-12 btn d-flex align-items-center text-light mb-3">
                     <Fa icon={faUserSecret} />
@@ -75,8 +73,8 @@ class App extends React.Component {
                   items={channels}
                   handleModalShow={showModal}
                   currentChannelId={currentChannelId}
-                  handleSetCurrentChannelId={id => async () => {
-                    await setCurrentChannelId(id);
+                  handleSetCurrentChannelId={id => () => {
+                    setCurrentChannelId(id);
                     scrollToBottom();
                   }}
                 />
@@ -92,7 +90,6 @@ class App extends React.Component {
                   }}
                 />
                 <Messages
-                  currentChannelId={currentChannelId}
                   items={messages}
                 />
                 <FormAddMsg initialValues={{ text: '' }} onSubmit={handleMsgSubmit(addMessage, currentChannelId, username)} form="msgForm" />

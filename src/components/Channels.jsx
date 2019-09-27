@@ -7,12 +7,12 @@ const Channels = ({
   currentChannelId,
 }) => (
   <ListGroup variant="flush">
-    {Object.values(items).map(({ id, name }) => {
+    {items.map(({ id, name }) => {
       const btnClass = cn({
         'btn-info bg-info': id !== currentChannelId,
         'text-white': id !== currentChannelId,
         'btn-light': id === currentChannelId,
-        'list-group-item shadow-none btn text-left pt-1 pb-1': true,
+        'list-group-item shadow-none btn text-left py-1': true,
       });
       return (
         <ListGroup.Item

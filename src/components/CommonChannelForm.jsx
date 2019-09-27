@@ -11,12 +11,9 @@ const renderField = ({
   </div>
 );
 
-const mapStateToProps = (state) => {
-  const props = {
-    channelsNames: Object.values(state.channels.byId).map(item => item.name),
-  };
-  return props;
-};
+const mapStateToProps = state => ({
+  channelsNames: Object.values(state.channels.byId).map(item => item.name),
+});
 
 @reduxForm()
 @connect(mapStateToProps)

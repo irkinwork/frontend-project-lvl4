@@ -39,50 +39,50 @@ export const addMessage = ({ data }) => async (dispatch) => {
   try {
     const { channelId } = data.attributes;
     await axios.post(routes.channelMessagesPath(channelId), { data });
-    await dispatch(addMessageSuccess());
+    dispatch(addMessageSuccess());
   } catch (e) {
     dispatch(addMessageFailure(e));
   }
 };
 
 export const addChannel = ({ data }) => async (dispatch) => {
-  await dispatch(addChannelRequest());
-  await dispatch(setIsLoaded(false));
+  dispatch(addChannelRequest());
+  dispatch(setIsLoaded(false));
   try {
     const response = await axios.post(routes.channelsPath(), { data });
     const { data: { data: { attributes: { id } } } } = response;
-    await dispatch(addChannelSuccess());
-    await dispatch(setCurrentChannelId(id));
-    await dispatch(hideModal());
-    await dispatch(setIsLoaded(true));
+    dispatch(addChannelSuccess());
+    dispatch(setCurrentChannelId(id));
+    dispatch(hideModal());
+    dispatch(setIsLoaded(true));
   } catch (e) {
     dispatch(addChannelFailure(e));
   }
 };
 
 export const renameChannel = ({ data }, id) => async (dispatch) => {
-  await dispatch(renameChannelRequest());
-  await dispatch(setIsLoaded(false));
+  dispatch(renameChannelRequest());
+  dispatch(setIsLoaded(false));
   try {
     await axios.patch(routes.channelPath(id), { data });
-    await dispatch(renameChannelSuccess());
-    await dispatch(setCurrentChannelId(id));
-    await dispatch(hideModal());
-    await dispatch(setIsLoaded(true));
+    dispatch(renameChannelSuccess());
+    dispatch(setCurrentChannelId(id));
+    dispatch(hideModal());
+    dispatch(setIsLoaded(true));
   } catch (e) {
-    await dispatch(renameChannelFailure(e));
+    dispatch(renameChannelFailure(e));
   }
 };
 
 export const removeChannel = id => async (dispatch) => {
-  await dispatch(removeChannelRequest());
-  await dispatch(setIsLoaded(false));
+  dispatch(removeChannelRequest());
+  dispatch(setIsLoaded(false));
   try {
     await axios.delete(routes.channelPath(id));
-    await dispatch(removeChannelSuccess());
-    await dispatch(setInitialCurrentChannelId());
-    await dispatch(hideModal());
-    await dispatch(setIsLoaded(true));
+    dispatch(removeChannelSuccess());
+    dispatch(setInitialCurrentChannelId());
+    dispatch(hideModal());
+    dispatch(setIsLoaded(true));
   } catch (e) {
     dispatch(removeChannelFailure(e));
   }

@@ -16,48 +16,48 @@ const mapStateToProps = state => ({
 class FormAddMsg extends React.Component {
   static contextType = UserContext;
 
-  renderField = ({
-    input, meta: { error },
-  }) => {
+  handleKeydown = (key, e) => {
     const {
       text, reset, submit, change,
     } = this.props;
-    return (
-      <KeyboardEventHandler
-        className="w-100"
-        handleKeys={['ctrl+enter', 'enter']}
-        onKeyEvent={(key, e) => {
-          switch (key) {
-            case 'enter': {
-              e.preventDefault();
-              submit('msgForm');
-              reset();
-              break;
-            }
-            case 'ctrl+enter': {
-              change('msgForm', 'text', `${text}\n`);
-              break;
-            }
-            default: break;
-          }
-        }}
-      >
-        <TextareaAutosize
-          rows={2}
-          className="flex-fill pre-scrollable w-100"
-          {...input}
-        />
-        {(error && <small className="position-absolute fixed-bottom pl-3 text-info">{error}</small>)}
-      </KeyboardEventHandler>
-    );
+    switch (key) {
+      case 'enter': {
+        e.preventDefault();
+        submit('msgForm');
+        reset();
+        break;
+      }
+      case 'ctrl+enter': {
+        change('msgForm', 'text', `${text}\n`);
+        break;
+      }
+      default: break;
+    }
   }
+
+  renderField = ({
+    input, meta: { error },
+  }) => (
+    <KeyboardEventHandler
+      className="w-100"
+      handleKeys={['ctrl+enter', 'enter']}
+      onKeyEvent={this.handleKeydown}
+    >
+      <TextareaAutosize
+        rows={2}
+        className="flex-fill pre-scrollable w-100"
+        {...input}
+      />
+      {(error && <small className="position-absolute fixed-bottom pl-3 text-info">{error}</small>)}
+    </KeyboardEventHandler>
+  );
 
   render() {
     const {
       submitting, error,
     } = this.props;
     const renderedForm = (
-      <form className="form-inline align-items-end pr-3 pb-3 pl-3">
+      <form className="form-inline align-items-end px-3 pb-3">
         <div className="w-100 d-flex">
           <Field name="text" required disabled={submitting} component={this.renderField} />
         </div>
