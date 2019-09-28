@@ -19,20 +19,16 @@ export const renameChannelSuccess = createAction('CHANNEL_RENAME_SUCCESS');
 export const renameChannelFailure = createAction('CHANNEL_RENAME_FAILURE');
 
 export const setCurrentChannelId = createAction('CHANNEL_SET');
-export const setInitialCurrentChannelId = createAction('CHANNEL_INITIAL_SET');
 
 export const showModal = createAction('SHOW_MODAL');
 export const hideModal = createAction('HIDE_MODAL');
 
-export const getChannelsFromGon = createAction('CHANNELS_GET_FROM_GONE');
-export const getMessagesFromGon = createAction('MESSAGES_GET_FROM_GONE');
+export const getDataFromGon = createAction('DATA_GET_FROM_GONE');
 
 export const addMessageToStore = createAction('MESSAGE_ADD_TO_STORE');
 export const addChannelToStore = createAction('CHANNEL_ADD_TO_STORE');
-
 export const removeChannelFromStore = createAction('CHANNEL_REMOVE_FROM_STORE');
 export const renameChannelFromStore = createAction('CHANNEL_RENAME_FROM_STORE');
-export const setIsLoaded = createAction('APP_IS_LOADED');
 
 export const addMessage = ({ data }) => async (dispatch) => {
   dispatch(addMessageRequest());
@@ -41,49 +37,41 @@ export const addMessage = ({ data }) => async (dispatch) => {
     await axios.post(routes.channelMessagesPath(channelId), { data });
     dispatch(addMessageSuccess());
   } catch (e) {
-    dispatch(addMessageFailure(e));
+    dispatch(addMessageFailure());
+    throw e;
   }
 };
 
 export const addChannel = ({ data }) => async (dispatch) => {
   dispatch(addChannelRequest());
-  dispatch(setIsLoaded(false));
   try {
     const response = await axios.post(routes.channelsPath(), { data });
     const { data: { data: { attributes: { id } } } } = response;
-    dispatch(addChannelSuccess());
-    dispatch(setCurrentChannelId(id));
-    dispatch(hideModal());
-    dispatch(setIsLoaded(true));
+    dispatch(addChannelSuccess(id));
   } catch (e) {
-    dispatch(addChannelFailure(e));
+    dispatch(addChannelFailure());
+    throw e;
   }
 };
 
 export const renameChannel = ({ data }, id) => async (dispatch) => {
   dispatch(renameChannelRequest());
-  dispatch(setIsLoaded(false));
   try {
     await axios.patch(routes.channelPath(id), { data });
-    dispatch(renameChannelSuccess());
-    dispatch(setCurrentChannelId(id));
-    dispatch(hideModal());
-    dispatch(setIsLoaded(true));
+    dispatch(renameChannelSuccess(id));
   } catch (e) {
-    dispatch(renameChannelFailure(e));
+    dispatch(renameChannelFailure());
+    throw e;
   }
 };
 
 export const removeChannel = id => async (dispatch) => {
   dispatch(removeChannelRequest());
-  dispatch(setIsLoaded(false));
   try {
     await axios.delete(routes.channelPath(id));
-    dispatch(removeChannelSuccess());
-    dispatch(setInitialCurrentChannelId());
-    dispatch(hideModal());
-    dispatch(setIsLoaded(true));
+    dispatch(removeChannelSuccess(id));
   } catch (e) {
-    dispatch(removeChannelFailure(e));
+    dispatch(removeChannelFailure());
+    throw e;
   }
 };

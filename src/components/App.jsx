@@ -28,20 +28,37 @@ const username = cookies.get('user');
 class App extends React.Component {
   static contextType = UserContext;
 
-  async componentDidMount() {
-    const {
-      getMessagesFromGon, getChannelsFromGon, gon,
-      setIsLoaded,
-    } = this.props;
-    await getChannelsFromGon(gon.channels);
-    await getMessagesFromGon(gon.messages);
-    await setIsLoaded(true);
+  componentDidMount() {
+    const { getDataFromGon, gon } = this.props;
+    const { messages, channels } = gon;
+    getDataFromGon({ messages, channels });
+  }
+
+  handleSetCurrentChannelId = id => async () => {
+    const { setCurrentChannelId } = this.props;
+    await setCurrentChannelId(id);
+    scrollToBottom();
+  }
+
+  handleShowAddModal = () => {
+    const { showModal } = this.props;
+    showModal({ type: 'Add', props: {} });
+  }
+
+  handleRemoveChannel = () => {
+    const { showModal, currentChannel } = this.props;
+    showModal({ type: 'Remove', props: currentChannel });
+  }
+
+  handleRenameChannel = () => {
+    const { showModal, currentChannel } = this.props;
+    showModal({ type: 'Rename', props: currentChannel });
   }
 
   render() {
     const {
       currentChannelId, messages,
-      setCurrentChannelId, channels,
+      channels,
       showModal, isLoaded, currentChannel,
       addMessage,
     } = this.props;
@@ -61,9 +78,7 @@ class App extends React.Component {
                   <button
                     className="btn btn btn-info w-100 text-left"
                     type="button"
-                    onClick={() => {
-                      showModal({ type: 'Add', props: {} });
-                    }}
+                    onClick={this.handleShowAddModal}
                   >
                     <Fa icon={faPlusCircle} />
                     <span className="ml-2">Add a new channel</span>
@@ -73,21 +88,14 @@ class App extends React.Component {
                   items={channels}
                   handleModalShow={showModal}
                   currentChannelId={currentChannelId}
-                  handleSetCurrentChannelId={id => () => {
-                    setCurrentChannelId(id);
-                    scrollToBottom();
-                  }}
+                  handleSetCurrentChannelId={this.handleSetCurrentChannelId}
                 />
               </Col>
               <Col bsPrefix="col-10 h-100 d-flex flex-column">
                 <Header
                   currentChannel={currentChannel}
-                  handleRemoveChannel={() => {
-                    showModal({ type: 'Remove', props: currentChannel });
-                  }}
-                  handleRenameChannel={() => {
-                    showModal({ type: 'Rename', props: currentChannel });
-                  }}
+                  handleRemoveChannel={this.handleRemoveChannel}
+                  handleRenameChannel={this.handleRenameChannel}
                 />
                 <Messages
                   items={messages}

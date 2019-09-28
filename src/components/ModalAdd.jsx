@@ -11,17 +11,18 @@ const mapStateToProps = state => ({
 
 @connect(mapStateToProps)
 class ModalAdd extends React.Component {
+  addChannel = () => {
+    const { submit } = this.props;
+    submit('addChannelForm');
+  }
+
   render() {
-    const {
-      submit, addChannel, channelsNames,
-    } = this.props;
+    const { addChannel, channelsNames } = this.props;
     return (
       <Modal
         title="Add a new channel"
         okText="Add"
-        doAction={() => {
-          submit('addChannelForm');
-        }}
+        doAction={this.addChannel}
       >
         <CommonChannelForm
           form="addChannelForm"

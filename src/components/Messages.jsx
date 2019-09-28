@@ -9,12 +9,12 @@ const Messages = ({ items }) => {
   }, []);
 
   const messages = items.map((item) => {
-    const textLines = item.text.split('\n').map((line, id) => ({ id, line }));
+    const textLines = item.text.split('\n').map((line, key) => ({ key, line }));
     return (
       <div key={item.id} className="my-1">
         <strong className="mr-1">{item.username}</strong>
         <small>{item.date}</small>
-        <div>{textLines.map(({ id, line }) => <div key={`${item.id}_${id}`}>{unescape(line)}</div>)}</div>
+        <div>{textLines.map(({ key, line }) => <div key={`${item.id}_${key}`}>{unescape(line)}</div>)}</div>
       </div>
     );
   });

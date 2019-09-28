@@ -11,18 +11,21 @@ const mapStateToProps = state => ({
 
 @connect(mapStateToProps)
 class ModalRename extends React.Component {
+  renameChannel = () => {
+    const { submit } = this.props;
+    submit('renameChannelForm');
+  }
+
   render() {
     const {
-      submit, renameChannel, modal: { props: { name, id } },
+      renameChannel, modal: { props: { name, id } },
       channelsNames,
     } = this.props;
     return (
       <Modal
         title={`Rename #${name}`}
         okText="Rename"
-        doAction={() => {
-          submit('renameChannelForm');
-        }}
+        doAction={this.renameChannel}
       >
         <CommonChannelForm
           form="renameChannelForm"
@@ -30,7 +33,6 @@ class ModalRename extends React.Component {
           initialValues={{ name }}
         />
       </Modal>
-
     );
   }
 }

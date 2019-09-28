@@ -9,17 +9,20 @@ const mapStateToProps = state => ({
 
 @connect(mapStateToProps)
 class ModalRemove extends React.Component {
-  render() {
+  removeChannel = () => {
     const {
-      removeChannel, modal: { props: { name, id } },
+      modal: { props: { id } }, removeChannel,
     } = this.props;
+    removeChannel(id, scrollToBottom);
+  }
+
+  render() {
+    const { modal: { props: { name } } } = this.props;
     return (
       <Modal
         title={`Remove #${name}`}
         okText="Remove"
-        doAction={async () => {
-          await removeChannel(id, scrollToBottom);
-        }}
+        doAction={this.removeChannel}
       >
         {`Do you really want to remove #${name}?`}
       </Modal>
