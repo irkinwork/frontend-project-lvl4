@@ -37,14 +37,14 @@ const currentChannelId = handleActions({
   [actions.setCurrentChannelId](state, { payload }) {
     return payload;
   },
+  [actions.removeChannelFromStore]() {
+    return initialCurrentChannelId;
+  },
   [combineActions(
     actions.addChannelSuccess,
     actions.renameChannelSuccess,
   )](state, { payload }) {
     return payload;
-  },
-  [actions.removeChannelSuccess]() {
-    return initialCurrentChannelId;
   },
 }, initialCurrentChannelId);
 
