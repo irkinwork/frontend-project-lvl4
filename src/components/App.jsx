@@ -1,6 +1,5 @@
 import React from 'react';
 import { hot } from 'react-hot-loader/root';
-import cookies from 'js-cookie';
 import { FontAwesomeIcon as Fa } from '@fortawesome/react-fontawesome';
 import { faPlusCircle, faUserSecret } from '@fortawesome/free-solid-svg-icons';
 import { faSlackHash } from '@fortawesome/free-brands-svg-icons';
@@ -24,8 +23,6 @@ const mapStateToProps = ({
   currentChannelId,
   messages: messages.filter(item => item.channelId === currentChannelId),
 });
-
-const username = cookies.get('user');
 
 @connect(mapStateToProps)
 class App extends React.Component {
@@ -63,7 +60,7 @@ class App extends React.Component {
       currentChannelId, messages,
       channels,
       showModal, isLoaded, currentChannel,
-      addMessage,
+      addMessage, username,
     } = this.props;
     return (
       <UserContext.Provider value={username}>

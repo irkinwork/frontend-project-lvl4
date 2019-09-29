@@ -31,7 +31,7 @@ io.on('renameChannel', (channel) => {
 if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
 }
-const user = fake('{{name.lastName}} {{name.firstName}}');
-cookies.set('user', user);
+const username = fake('{{name.lastName}} {{name.firstName}}');
+cookies.set('username', username);
 
-init(gon);
+init(gon, username);

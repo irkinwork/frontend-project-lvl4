@@ -10,10 +10,10 @@ import App from './components/App';
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 export const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk)));
 
-export default (gon) => {
+export default (gon, username) => {
   ReactDOM.render(
     <Provider store={store}>
-      <App gon={gon} />
+      <App gon={gon} username={username} />
     </Provider>, document.getElementById('chat'),
   );
 };
