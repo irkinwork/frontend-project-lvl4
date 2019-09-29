@@ -3,13 +3,11 @@ import connect from '../connect';
 import ModalAdd from './ModalAdd';
 import ModalRename from './ModalRename';
 import ModalRemove from './ModalRemove';
-import ModalInfoRemoved from './ModalInfoRemoved';
 
 const modalComponents = {
   Add: ModalAdd,
   Rename: ModalRename,
   Remove: ModalRemove,
-  Removed: ModalInfoRemoved,
 };
 
 const mapStateToProps = state => ({

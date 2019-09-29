@@ -13,8 +13,7 @@ class ModalRemove extends React.Component {
     const {
       modal: { props: { id } }, removeChannel,
     } = this.props;
-    removeChannel(id);
-    scrollToBottom();
+    removeChannel(id, scrollToBottom);
   }
 
   render() {
