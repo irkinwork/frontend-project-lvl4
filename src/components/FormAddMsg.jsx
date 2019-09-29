@@ -39,7 +39,7 @@ class FormAddMsg extends React.Component {
     input, meta: { error },
   }) => (
     <KeyboardEventHandler
-      className="w-100"
+      className="w-100 d-flex mb-5 mb-lg-0"
       handleKeys={['ctrl+enter', 'enter']}
       onKeyEvent={this.handleKeydown}
     >
@@ -58,9 +58,7 @@ class FormAddMsg extends React.Component {
     } = this.props;
     const renderedForm = (
       <form className="form-inline align-items-end px-3 pb-3">
-        <div className="w-100 d-flex">
-          <Field name="text" required disabled={submitting} component={this.renderField} />
-        </div>
+        <Field name="text" required disabled={submitting} component={this.renderField} />
         {error && <small className="position-absolute fixed-bottom pl-3 text-info">{error}</small>}
       </form>
     );

@@ -9,10 +9,9 @@ const Channels = ({
   <ListGroup variant="flush">
     {items.map(({ id, name }) => {
       const btnClass = cn({
-        'btn-info bg-info': id !== currentChannelId,
-        'text-white': id !== currentChannelId,
-        'btn-light': id === currentChannelId,
-        'list-group-item shadow-none btn text-left py-1': true,
+        'btn-dark bg-dark': id !== currentChannelId,
+        'bg-info': id === currentChannelId,
+        'btn list-group-item shadow-none text-left py-1 px-3 text-white text-break': true,
       });
       return (
         <ListGroup.Item

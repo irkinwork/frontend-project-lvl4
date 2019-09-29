@@ -5,7 +5,7 @@ import { Field, reduxForm } from 'redux-form';
 const renderField = ({
   input, label, type, meta: { touched, error },
 }) => (
-  <div className="d-flex flex-fill flex-column">
+  <div className="d-flex flex-fill flex-column w-100">
     <input {...input} placeholder={label} type={type} className="p-1" />
     {touched && (error && <small className="text-info">{error}</small>)}
   </div>
@@ -24,9 +24,7 @@ class CommonChannelForm extends React.PureComponent {
     } = this.props;
     const renderedForm = (
       <form className="form-inline align-items-baseline" onSubmit={handleSubmit}>
-        <div className="w-100 d-flex">
-          <Field name="name" required disabled={submitting} component={renderField} type="text" />
-        </div>
+        <Field name="name" required disabled={submitting} component={renderField} type="text" />
         {error && <small className="text-info mt-1">{error}</small>}
       </form>
     );

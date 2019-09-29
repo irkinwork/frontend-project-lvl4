@@ -24,6 +24,11 @@ export const handleChannelSubmit = (doAction, channelsNames, id) => async (value
       name: 'Sorry, channel with this name already exists',
     });
   }
+  if (name && name.length > 15) {
+    throw new SubmissionError({
+      name: 'The maximum length should be 15 symbols',
+    });
+  }
   if ((name.trim() === '')) {
     throw new SubmissionError({
       name: 'You can\'t add channel with empty name',

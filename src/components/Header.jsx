@@ -4,11 +4,11 @@ import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 const Header = ({ currentChannel, handleRemoveChannel, handleRenameChannel }) => (
   <div className="sticky-top border-bottom bg-light d-flex px-3 py-2">
-    <strong className="lead py-1 d-flex flex-fill">{`#${currentChannel.name}`}</strong>
+    <strong className="lead py-1 d-flex flex-fill text-break">{`#${currentChannel.name}`}</strong>
     {currentChannel.removable && (
       <>
         <button
-          className="btn btn-light p-1"
+          className="btn btn-light p-1 flex-shrink-0"
           type="button"
           onClick={handleRemoveChannel}
         >
@@ -16,7 +16,7 @@ const Header = ({ currentChannel, handleRemoveChannel, handleRenameChannel }) =>
           <span className="ml-2">Remove</span>
         </button>
         <button
-          className="btn btn-light py-0"
+          className="btn btn-light py-0 flex-shrink-0"
           type="button"
           onClick={handleRenameChannel}
         >
