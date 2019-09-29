@@ -37,8 +37,9 @@ const currentChannelId = handleActions({
   [actions.setCurrentChannelId](state, { payload }) {
     return payload;
   },
-  [actions.removeChannelFromStore]() {
-    return initialCurrentChannelId;
+  [actions.removeChannelFromStore](state, { payload }) {
+    const { id } = payload;
+    return state === id ? initialCurrentChannelId : state;
   },
   [combineActions(
     actions.addChannelSuccess,
