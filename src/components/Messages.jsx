@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import useDeepCompareEffect from 'use-deep-compare-effect';
 import { Element } from 'react-scroll';
 import { unescape } from 'validator';
 import { scrollToBottom } from '../lib';
 
 const Messages = ({ items }) => {
-  useEffect(() => {
+  useDeepCompareEffect(() => {
     scrollToBottom();
   }, [items]);
 
