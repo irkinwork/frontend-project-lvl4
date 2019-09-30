@@ -19,7 +19,9 @@ io.on('newChannel', (channel) => {
 });
 
 io.on('removeChannel', (channel) => {
-  const { data } = channel;
+  const { data: { id, name } } = channel;
+  const { currentChannelId } = store.getState();
+  const data = { id, name, currentChannelId };
   store.dispatch(actions.removeChannelFromStore(data));
 });
 

@@ -73,10 +73,13 @@ const modal = handleActions({
   [actions.hideModal]() {
     return modalInitialState;
   },
+  [actions.removeChannelFromStore](state, { payload }) {
+    const { id, name, currentChannelId: prevCurrentChannelId } = payload;
+    return prevCurrentChannelId === id ? { type: 'Removed', props: { name, id } } : state;
+  },
   [combineActions(
     actions.addChannelSuccess,
     actions.renameChannelSuccess,
-    actions.removeChannelSuccess,
   )]() {
     return modalInitialState;
   },
