@@ -6,7 +6,7 @@ import { scrollToBottom } from '../lib';
 const Messages = ({ items }) => {
   useEffect(() => {
     scrollToBottom();
-  }, []);
+  }, [items]);
 
   const messages = items.map((item) => {
     const textLines = item.text.split('\n').map((line, key) => ({ key, line }));

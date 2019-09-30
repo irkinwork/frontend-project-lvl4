@@ -5,7 +5,6 @@ import {
 import TextareaAutosize from 'react-autosize-textarea';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 import connect from '../connect';
-import { UserContext } from '../lib';
 
 const mapStateToProps = state => ({
   text: formValueSelector('msgForm')(state, 'text'),
@@ -14,8 +13,6 @@ const mapStateToProps = state => ({
 @reduxForm()
 @connect(mapStateToProps)
 class FormAddMsg extends React.Component {
-  static contextType = UserContext;
-
   handleKeydown = (key, e) => {
     const {
       text, reset, submit, change,
