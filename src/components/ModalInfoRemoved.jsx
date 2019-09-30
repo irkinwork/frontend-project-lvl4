@@ -14,7 +14,7 @@ class ModalInfo extends React.Component {
       <Modal
         title="Channel was removed"
       >
-        {`#${name} was removed`}
+        {`Channel #${name} doesn't exist anymore. We redirect you to #general.`}
       </Modal>
     );
   }
