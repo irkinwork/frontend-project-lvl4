@@ -34,9 +34,9 @@ class App extends React.Component {
     getDataFromGon({ messages, channels });
   }
 
-  handleSetCurrentChannelId = id => async () => {
+  handleSetCurrentChannelId = id => () => {
     const { setCurrentChannelId } = this.props;
-    await setCurrentChannelId(id);
+    setCurrentChannelId(id);
     scrollToBottom();
   }
 
