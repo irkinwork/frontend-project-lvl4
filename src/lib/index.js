@@ -42,12 +42,10 @@ export const handleChannelSubmit = (doAction, channelsNames, id) => async (value
 };
 
 export const scrollToBottom = () => {
-  Events.scrollEvent.register('begin');
-  Events.scrollEvent.register('end');
-  scrollSpy.update();
   scroller.scrollTo('last-message', {
     containerId: 'chat-container',
   });
+  scrollSpy.update();
 };
 
 export const handleMsgSubmit = (doAction, channelId, username) => async (values) => {

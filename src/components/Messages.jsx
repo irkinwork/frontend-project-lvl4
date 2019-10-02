@@ -1,13 +1,12 @@
-import React from 'react';
-import useDeepCompareEffect from 'use-deep-compare-effect';
+import React, { useEffect } from 'react';
 import { Element } from 'react-scroll';
 import { unescape } from 'validator';
 import { scrollToBottom } from '../lib';
 
 const Messages = ({ items }) => {
-  useDeepCompareEffect(() => {
+  useEffect(() => {
     scrollToBottom();
-  }, [items]);
+  }, []);
 
   const messages = items.map((item) => {
     const textLines = item.text.split('\n').map((line, key) => ({ key, line }));
