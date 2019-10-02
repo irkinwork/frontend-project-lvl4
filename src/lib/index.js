@@ -1,7 +1,7 @@
 import React from 'react';
 import { escape, isAlphanumeric, isLowercase } from 'validator';
 import { SubmissionError } from 'redux-form';
-import { scroller, Events, scrollSpy } from 'react-scroll';
+import { scroller, scrollSpy } from 'react-scroll';
 import { format } from 'date-fns';
 
 export const makeValuesSafe = values => Object.keys(values).reduce((acc, item) => {
