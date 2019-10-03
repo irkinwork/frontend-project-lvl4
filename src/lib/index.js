@@ -1,4 +1,3 @@
-import React from 'react';
 import { escape, isAlphanumeric, isLowercase } from 'validator';
 import { SubmissionError } from 'redux-form';
 import { scroller, scrollSpy } from 'react-scroll';
@@ -8,8 +7,6 @@ export const makeValuesSafe = values => Object.keys(values).reduce((acc, item) =
   acc[item] = escape(values[item]);
   return acc;
 }, {});
-
-export const UserContext = React.createContext();
 
 export const handleChannelSubmit = (doAction, channelsNames, id) => async (values) => {
   const data = { attributes: { ...values } };

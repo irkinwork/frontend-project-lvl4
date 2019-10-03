@@ -10,9 +10,10 @@ import FormAddMsg from './FormAddMsg';
 import Channels from './Channels';
 import Messages from './Messages';
 import connect from '../connect';
-import { UserContext, scrollToBottom, handleMsgSubmit } from '../lib';
+import { scrollToBottom, handleMsgSubmit } from '../lib';
 import RootModal from './RootModal';
 import Header from './Header';
+import UserContext from '../UserContext';
 
 const mapStateToProps = ({
   currentChannelId, messages, channels, isLoaded,
@@ -27,12 +28,6 @@ const mapStateToProps = ({
 @connect(mapStateToProps)
 class App extends React.Component {
   static contextType = UserContext;
-
-  componentDidMount() {
-    const { getDataFromGon, gon } = this.props;
-    const { messages, channels } = gon;
-    getDataFromGon({ messages, channels });
-  }
 
   handleSetCurrentChannelId = id => () => {
     const { setCurrentChannelId } = this.props;
@@ -60,10 +55,11 @@ class App extends React.Component {
       currentChannelId, messages,
       channels,
       showModal, isLoaded, currentChannel,
-      addMessage, username,
+      addMessage,
     } = this.props;
+    const username = this.context;
     return (
-      <UserContext.Provider value={username}>
+      <>
         {isLoaded ? (
           <>
             <RootModal />
@@ -124,7 +120,7 @@ class App extends React.Component {
             </div>
           </Spinner>
         )}
-      </UserContext.Provider>
+      </>
     );
   }
 }
