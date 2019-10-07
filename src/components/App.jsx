@@ -29,9 +29,9 @@ const mapStateToProps = ({
 class App extends React.Component {
   static contextType = UserContext;
 
-  handleSetCurrentChannelId = id => () => {
+  handleSetCurrentChannelId = id => async () => {
     const { setCurrentChannelId } = this.props;
-    setCurrentChannelId(id);
+    await setCurrentChannelId(id);
     scrollToBottom();
   }
 
