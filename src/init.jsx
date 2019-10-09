@@ -5,12 +5,16 @@ import '@babel/polyfill';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { createStore, applyMiddleware, compose } from 'redux';
+import cookies from 'js-cookie';
+import { fake } from 'faker';
 import reducers from './reducers';
 import * as actions from './actions';
 import App from './components/App';
 import UserContext from './UserContext';
 
-export default (gon, username) => {
+export default (gon) => {
+  const username = fake('{{name.lastName}} {{name.firstName}}');
+  cookies.set('username', username);
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
   const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk)));
   const io = openSocket();
