@@ -13,4 +13,4 @@ This project was built on Hexlet courses for practicing:
 - Bootsrap on React
 - Deploy (heroku.com)
 
-![](https://raw.githubusercontent.com/irkinwork/frontend-project-lvl4/master/preview.png)
+![](https://raw.githubusercontent.com/irkinwork/frontend-project-lvl4/master/preview2.png)
